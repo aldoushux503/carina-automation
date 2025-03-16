@@ -1,4 +1,4 @@
 {
-  "responseCode": 200,
-  "message": "User exists!"
+  "responseCode": 201,
+  "message": "User created!"
 }

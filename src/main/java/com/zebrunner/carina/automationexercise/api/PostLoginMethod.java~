@@ -1,0 +1,45 @@
+package com.zebrunner.carina.automationexercise.api;
+
+import com.zebrunner.carina.api.AbstractApiMethodV2;
+import com.zebrunner.carina.api.annotation.*;
+import com.zebrunner.carina.api.http.HttpMethodType;
+import com.zebrunner.carina.api.http.HttpResponseStatusType;
+import com.zebrunner.carina.utils.config.Configuration;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+
+@Header(key = "Content-Type", value = "application/x-www-form-urlencoded")
+@Endpoint(url = "${base_url}/verifyLogin", methodType = HttpMethodType.POST)
+@SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
+public class PostLoginMethod extends AbstractApiMethodV2 {
+    private PostLoginMethod(String requestTemplate, String responseTemplate, String propertiesPath) {
+        super(requestTemplate, responseTemplate, propertiesPath);
+        replaceUrlPlaceholder("base_url", Configuration.getRequired("api_url"));
+    }
+
+
+    public static PostLoginMethod createValidLoginMethod() {
+        return new PostLoginMethod(
+                "api/users/_post/valid_login_rq.properties",
+                "api/users/_post/valid_login_rs.json",
+                "api/users/user.properties"
+        );
+    }
+
+    public static PostLoginMethod createLoginWithoutEmailMethod() {
+        return new PostLoginMethod(
+                "api/users/_post/no_email_rq.properties",
+                "api/users/_post/no_email_rs.json",
+                "api/users/user.properties"
+        );
+    }
+
+    public static PostLoginMethod createInvalidLoginMethod() {
+        return new PostLoginMethod(
+                "api/users/_post/invalid_login_rq.properties",
+                "api/users/_post/invalid_login_rs.json",
+                "api/users/user.properties"
+        );
+    }
+
+
+}
