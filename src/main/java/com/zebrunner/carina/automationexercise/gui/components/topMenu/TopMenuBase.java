@@ -16,6 +16,7 @@
 package com.zebrunner.carina.automationexercise.gui.components.topMenu;
 
 import com.zebrunner.carina.automationexercise.gui.pages.common.ContactUsPageBase;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.CartPage;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.ContactUsPage;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.ProductsPage;
 import com.zebrunner.carina.demo.gui.pages.common.HomePageBase;
@@ -31,6 +32,7 @@ public abstract class TopMenuBase extends AbstractUIObject {
     }
 
 
+    public abstract CartPage openCartPage();
     public abstract HomePageBase openHomePage();
     public abstract ContactUsPageBase openContactUsPage();
     public abstract ProductsPage openProductsPage();

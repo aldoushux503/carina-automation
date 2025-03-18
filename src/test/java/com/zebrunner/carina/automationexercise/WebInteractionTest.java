@@ -23,11 +23,12 @@ public class WebInteractionTest implements IAbstractTest {
     @Test()
     public void testOpenHomePage() {
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "true");
+        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
     }
 
     @Test(dataProvider = "contactUsData", dependsOnMethods = "testOpenHomePage")
-    public void testContactUs(String name, String email, String subject, String message, String filePath) {
+    public void testContactUs(String testId, String name, String email,
+                              String subject, String message, String filePath) {
         ContactUsPageBase contactUsPage = homePage.getContactUsPage();
 
         Assert.assertTrue(contactUsPage.isPageOpened());
@@ -43,12 +44,12 @@ public class WebInteractionTest implements IAbstractTest {
     @DataProvider(name = "contactUsData")
     public Object[][] contactUsData() {
         return new Object[][] {
-                { "Albert", "Albert@gmail.com", "Math", "Hello world", "src/test/resources/files/icon.png"}
+                {"ContactUs test - 1" ,"Albert", "Albert@gmail.com", "Math", "Hello world", "src/test/resources/files/icon.png"}
         };
     }
 
     @Test(dataProvider = "searchTerms", dependsOnMethods = {"testOpenHomePage", "testContactUs"})
-    public void testProductSearch(String searchTerm) {
+    public void testProductSearch(String testId, String searchTerm) {
         ProductsPageBase productsPage = homePage.getProductsPage();
 
         Assert.assertTrue(productsPage.isPageOpened());
@@ -61,7 +62,7 @@ public class WebInteractionTest implements IAbstractTest {
     @DataProvider(name = "searchTerms")
     public Object[][] searchTerms() {
         return new Object[][] {
-                { "jean" }
+                {"Search item test - 1 ", "jean" }
         };
     }
 }

@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 public class APITasksTest implements IAbstractTest {
 
     @Test()
-    @MethodOwner(owner = "qpsdemo")
     public void testGetAllProducts() {
         GetProductsListMethod getProductsListMethod = new GetProductsListMethod();
         getProductsListMethod.callAPIExpectSuccess();
@@ -19,7 +18,6 @@ public class APITasksTest implements IAbstractTest {
     }
 
     @Test()
-    @MethodOwner(owner = "qpsdemo")
     public void testPostSearchProducts() {
         PostSearchProductMethod postSearchProductMethod = new PostSearchProductMethod();
         postSearchProductMethod.callAPIExpectSuccess();
@@ -27,7 +25,6 @@ public class APITasksTest implements IAbstractTest {
     }
 
     @Test()
-    @MethodOwner(owner = "qpsdemo")
     public void testValidUserLogin() {
         PostLoginMethods loginMethod = PostLoginMethods.createValidLoginMethod();
         loginMethod.callAPI();
@@ -35,7 +32,6 @@ public class APITasksTest implements IAbstractTest {
     }
 
     @Test()
-    @MethodOwner(owner = "qpsdemo")
     public void testLoginWithoutEmail() {
         PostLoginMethods loginMethod = PostLoginMethods.createLoginWithoutEmailMethod();
         loginMethod.callAPI();
@@ -43,7 +39,6 @@ public class APITasksTest implements IAbstractTest {
     }
 
     @Test()
-    @MethodOwner(owner = "qpsdemo")
     public void testLoginWithInvalidDetails() {
         PostLoginMethods loginMethod = PostLoginMethods.createInvalidLoginMethod();
         loginMethod.callAPI();

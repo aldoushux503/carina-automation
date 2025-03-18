@@ -35,7 +35,6 @@ public class APIUserTest implements IAbstractTest {
     }
 
     @Test(groups = "delete", dependsOnGroups = {"create", "update", "get"},  alwaysRun = true)
-    @MethodOwner(owner = "qpsdemo")
     public void testDeleteUser() {
         DeleteUserMethod deleteUser = new DeleteUserMethod();
         deleteUser.callAPIExpectSuccess();
@@ -43,7 +42,6 @@ public class APIUserTest implements IAbstractTest {
     }
 
     @Test(groups = "update", dependsOnGroups = {"create", "get"})
-    @MethodOwner(owner = "qpsdemo")
     public void testUpdateUser() {
         PutUpdateUserMethod updateUser = new PutUpdateUserMethod();
         updateUser.callAPIExpectSuccess();

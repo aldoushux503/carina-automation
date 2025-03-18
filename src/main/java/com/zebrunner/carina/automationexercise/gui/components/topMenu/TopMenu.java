@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.zebrunner.carina.automationexercise.gui.components.topMenu;
 
+import com.zebrunner.carina.automationexercise.gui.pages.common.CartPageBase;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.CartPage;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.ContactUsPage;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.ProductsPage;
 import com.zebrunner.carina.demo.gui.pages.desktop.CompareModelsPage;
@@ -62,6 +64,13 @@ public class TopMenu extends TopMenuBase {
         contactUs.click();
         return new ContactUsPage(driver);
     }
+
+    @Override
+    public CartPage openCartPage() {
+        cartLink.click();
+        return new CartPage(driver);
+    }
+
 
     @Override
     public ProductsPage openProductsPage() {
