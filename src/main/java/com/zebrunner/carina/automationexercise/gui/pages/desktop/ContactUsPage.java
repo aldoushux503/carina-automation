@@ -4,14 +4,21 @@ import com.zebrunner.carina.automationexercise.gui.pages.common.ContactUsPageBas
 import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.decorator.PageOpeningStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = HomePageBase.class)
 public class ContactUsPage extends ContactUsPageBase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     @FindBy(xpath = "//h2[contains(@class, 'title text-center')]")
     private ExtendedWebElement getInTouchTitle;
 
@@ -32,8 +39,14 @@ public class ContactUsPage extends ContactUsPageBase {
 
     @FindBy(xpath = "//input[contains(@name, 'submit')]")
     private ExtendedWebElement submitButton;
+
+
+    @FindBy(xpath = "//div[contains(text(),'Success! Your details have been submitted successfully.')]")
+    private ExtendedWebElement successMessage;
+
     public ContactUsPage(WebDriver driver) {
         super(driver);
+        setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
         setUiLoadedMarker(getInTouchTitle);
     }
 
@@ -67,6 +80,25 @@ public class ContactUsPage extends ContactUsPageBase {
 
     @Override
     public void clickSubmitButton() {
-        submitButton.click();
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(submitButton.getElement()).click().perform();
+        acceptAlert(5);
+    }
+
+    /**
+     * Helper method to accept an alert with better error handling
+     */
+    private void acceptAlert(int timeoutInSeconds) {
+        try {
+            waitUntil(ExpectedConditions.alertIsPresent(), timeoutInSeconds);
+            getDriver().switchTo().alert().accept();
+        } catch (Exception e) {
+            LOGGER.warn("No alert present or could not be accepted", e);
+        }
+    }
+
+    @Override
+    public boolean isSuccessMessageVisible() {
+        return successMessage.isElementPresent();
     }
 }

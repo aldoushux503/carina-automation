@@ -12,4 +12,6 @@ public abstract class ProductsPageBase extends AbstractPage {
     public abstract void searchProducts(String product);
 
     public abstract void clickSubmitSearchButton();
+
+    public abstract boolean areSearchResultsVisible(String searchTerm);
 }

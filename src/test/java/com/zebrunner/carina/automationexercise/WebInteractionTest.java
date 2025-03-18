@@ -8,6 +8,7 @@ import com.zebrunner.carina.core.IAbstractTest;
 import org.apache.ibatis.io.Resources;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class WebInteractionTest implements IAbstractTest {
@@ -25,26 +26,42 @@ public class WebInteractionTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "true");
     }
 
-//    @Test(dependsOnMethods = "testOpenHomePage")
-//    public void testContactUs() {
-//        ContactUsPageBase contactUsPage = homePage.getContactUsPage();
-//
-////        Assert.assertTrue(contactUsPage.isPageOpened());
-//        contactUsPage.inputName("Albert");
-//        contactUsPage.inputEmail("Albert@gmail.com");
-//        contactUsPage.inputSubject("Math");
-//        contactUsPage.inputMessage("Hello world");
-//        contactUsPage.attacheFile("src/test/resources/files/icon.png");
-//        contactUsPage.clickSubmitButton();
-//    }
+    @Test(dataProvider = "contactUsData", dependsOnMethods = "testOpenHomePage")
+    public void testContactUs(String name, String email, String subject, String message, String filePath) {
+        ContactUsPageBase contactUsPage = homePage.getContactUsPage();
 
+        Assert.assertTrue(contactUsPage.isPageOpened());
+        contactUsPage.inputName(name);
+        contactUsPage.inputEmail(email);
+        contactUsPage.inputSubject(subject);
+        contactUsPage.inputMessage(message);
+        contactUsPage.attacheFile(filePath);
+        contactUsPage.clickSubmitButton();
+        Assert.assertTrue(contactUsPage.isSuccessMessageVisible());
+    }
 
-    @Test(dependsOnMethods = "testOpenHomePage")
-    public void testProductSearch() {
+    @DataProvider(name = "contactUsData")
+    public Object[][] contactUsData() {
+        return new Object[][] {
+                { "Albert", "Albert@gmail.com", "Math", "Hello world", "src/test/resources/files/icon.png"}
+        };
+    }
+
+    @Test(dataProvider = "searchTerms", dependsOnMethods = {"testOpenHomePage", "testContactUs"})
+    public void testProductSearch(String searchTerm) {
         ProductsPageBase productsPage = homePage.getProductsPage();
 
-        Assert.assertTrue(productsPage.isPageOpened(3));
-        productsPage.searchProducts("Jean");
+        Assert.assertTrue(productsPage.isPageOpened());
+        productsPage.searchProducts(searchTerm);
         productsPage.clickSubmitSearchButton();
+        Assert.assertTrue(productsPage.areSearchResultsVisible(searchTerm),
+                "No search results are visible");
+    }
+
+    @DataProvider(name = "searchTerms")
+    public Object[][] searchTerms() {
+        return new Object[][] {
+                { "jean" }
+        };
     }
 }

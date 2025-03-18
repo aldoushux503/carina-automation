@@ -19,4 +19,6 @@ public abstract class ContactUsPageBase extends AbstractPage {
     public abstract void inputMessage(String message);
     public abstract void attacheFile(String filePath);
     public abstract void clickSubmitButton();
+
+    public abstract boolean isSuccessMessageVisible();
 }
