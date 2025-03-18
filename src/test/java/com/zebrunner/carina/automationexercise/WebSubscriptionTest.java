@@ -61,7 +61,42 @@ public class WebSubscriptionTest implements IAbstractTest {
     public Object[][] subscriptionProvider() {
         return new Object[][]{
                 {"Subscription test - 1", "test_" + RandomStringUtils.randomAlphanumeric(6) + "@example.com"},
-                {"Subscription test - 2", "test_" + RandomStringUtils.randomAlphanumeric(6) + "@example.com"}
+        };
+    }
+
+    @Test(dataProvider = "invalidSubscriptionProvider")
+    public void testInvalidSubscriptionInHomePage(String testId, String invalidEmail) {
+        homePage.scrollToSubscription();
+
+        Assert.assertTrue(homePage.isSubscriptionSectionVisible(),
+                "Subscription section is not visible in home page");
+
+        homePage.subscribeWithEmail(invalidEmail);
+
+        Assert.assertFalse(homePage.isSubscriptionSuccessMessageVisible(),
+                "Subscription success message is not visible");
+    }
+
+    @Test(dataProvider = "invalidSubscriptionProvider")
+    public void testInvalidSubscriptionInCartPage(String testId, String invalidEmail) {
+        CartPageBase cartPage = homePage.getCartPage();
+        Assert.assertTrue(cartPage.isPageOpened(), "Cart page is not opened");
+
+        cartPage.scrollToSubscription();
+
+        Assert.assertTrue(cartPage.isSubscriptionSectionVisible(),
+                "Subscription section is not visible in cart page");
+
+        cartPage.subscribeWithEmail(invalidEmail);
+
+        Assert.assertFalse(cartPage.isSubscriptionSuccessMessageVisible(),
+                "Subscription success message is not visible");
+    }
+
+    @DataProvider()
+    public Object[][] invalidSubscriptionProvider() {
+        return new Object[][]{
+                {"Invalid Subscription test - 1", "invalidemail"},
         };
     }
 }
