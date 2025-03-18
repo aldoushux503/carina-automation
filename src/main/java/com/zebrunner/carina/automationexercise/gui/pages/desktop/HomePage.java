@@ -92,4 +92,51 @@ public class HomePage extends HomePageBase {
                 subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!");
     }
 
+    @FindBy(xpath = "//div[@class='recommended_items']")
+    private ExtendedWebElement recommendedItemsSection;
+
+    @FindBy(xpath = "//h2[contains(text(),'recommended items')]")
+    private ExtendedWebElement recommendedItemsTitle;
+
+    @FindBy(xpath = "//div[@class='recommended_items']//div[@class='item active']//div[@class='productinfo text-center']/p")
+    private List<ExtendedWebElement> recommendedItemNames;
+
+    @FindBy(xpath = "//div[@class='recommended_items']//div[@class='item active']//a[@class='btn btn-default add-to-cart']")
+    private List<ExtendedWebElement> recommendedItemAddToCartButtons;
+
+    @FindBy(xpath = "//div[@class='modal-content']//a[contains(@href, 'view_cart')]")
+    private ExtendedWebElement viewCartModalButton;
+    @Override
+    public boolean isRecommendedItemsSectionVisible() {
+        return recommendedItemsTitle.isElementPresent() &&
+                recommendedItemsTitle.getText().equalsIgnoreCase("RECOMMENDED ITEMS");
+    }
+
+    @Override
+    public void scrollToRecommendedItems() {
+        recommendedItemsSection.scrollTo();
+    }
+
+    @Override
+    public String getRecommendedItemName(int index) {
+        if (index < 0 || index >= recommendedItemNames.size()) {
+            throw new IllegalArgumentException("Index out of bounds: " + index);
+        }
+        return recommendedItemNames.get(index).getText();
+    }
+
+    @Override
+    public void addRecommendedItemToCart(int index) {
+        if (index < 0 || index >= recommendedItemAddToCartButtons.size()) {
+            throw new IllegalArgumentException("Index out of bounds: " + index);
+        }
+        recommendedItemAddToCartButtons.get(index).click();
+    }
+
+    @Override
+    public CartPageBase clickViewCartFromModal() {
+        waitUntil(d -> viewCartModalButton.isElementPresent(), 5);
+        viewCartModalButton.click();
+        return initPage(getDriver(), CartPageBase.class);
+    }
 }

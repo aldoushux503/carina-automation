@@ -38,7 +38,11 @@ public abstract class HomePageBase extends AbstractPage {
 
     public abstract boolean isSubscriptionSuccessMessageVisible();
 
-
+    public abstract boolean isRecommendedItemsSectionVisible();
+    public abstract void scrollToRecommendedItems();
+    public abstract String getRecommendedItemName(int index);
+    public abstract void addRecommendedItemToCart(int index);
+    public abstract CartPageBase clickViewCartFromModal();
 
     @Override
     public void open() {
