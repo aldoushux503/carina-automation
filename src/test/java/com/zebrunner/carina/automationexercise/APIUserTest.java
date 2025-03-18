@@ -14,14 +14,12 @@ import org.testng.annotations.Test;
 public class APIUserTest implements IAbstractTest {
 
     @Test(groups = "create")
-    @MethodOwner(owner = "qpsdemo")
     public void testCreateUser() {
         PostCreateUser createUser = new PostCreateUser();
         createUser.callAPIExpectSuccess();
         createUser.validateResponse();
     }
     @Test(groups = "create", dependsOnMethods = "testCreateUser")
-    @MethodOwner(owner = "qpsdemo")
     public void testRepeatCreateUser() {
         PostCreateUser createSameUser = new PostCreateUser();
         createSameUser.callAPIExpectSuccess();

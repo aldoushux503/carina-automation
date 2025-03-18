@@ -13,29 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.zebrunner.carina.demo.gui.components.footer;
+package com.zebrunner.carina.automationexercise.gui.components.topMenu;
 
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.ContactUsPage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.ProductsPage;
 import com.zebrunner.carina.demo.gui.pages.desktop.CompareModelsPage;
 import com.zebrunner.carina.demo.gui.pages.desktop.HomePage;
 import com.zebrunner.carina.demo.gui.pages.desktop.NewsPage;
+import com.zebrunner.carina.demo.mobile.gui.pages.common.ContactUsPageBase;
+import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+public class TopMenu extends TopMenuBase {
 
-public class FooterMenu extends FooterMenuBase {
-
-    @FindBy(xpath = "Home")
+    @FindBy(xpath = "//a[contains(text(),'Home')]")
     private ExtendedWebElement homeLink;
 
-    @FindBy(xpath = ".//a[contains(text(),'Compare')]")
-    private ExtendedWebElement compareLink;
-    
-    @FindBy(linkText = "News")
-    private ExtendedWebElement newsLink;
 
-    public FooterMenu(WebDriver driver, SearchContext searchContext) {
+    @FindBy(xpath = "//a[contains(text(),'Products')]")
+    private ExtendedWebElement products;
+    
+
+    @FindBy(xpath = "//a[contains(text(),'Cart')]")
+    private ExtendedWebElement cartLink;
+
+    @FindBy(xpath = "//a[contains(text(),'Signup / Login')]")
+    private ExtendedWebElement login;
+
+    @FindBy(xpath = "//a[contains(@href, '/contact_us')]")
+
+    private ExtendedWebElement contactUs;
+
+
+    public TopMenu(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
 
@@ -45,17 +57,15 @@ public class FooterMenu extends FooterMenuBase {
         return new HomePage(driver);
     }
 
-    public CompareModelsPage openComparePage() {
-        compareLink.scrollTo();
-        compareLink.hover();
-        compareLink.click();
-        return new CompareModelsPage(driver);
+    @Override
+    public ContactUsPage openContactUsPage() {
+        contactUs.click();
+        return new ContactUsPage(driver);
     }
-    
-    public NewsPage openNewsPage() {
-        newsLink.scrollTo();
-        newsLink.hover();
-        newsLink.click();
-        return new NewsPage(driver);
+
+    @Override
+    public ProductsPage openProductsPage() {
+        products.click();
+        return new ProductsPage(driver);
     }
 }

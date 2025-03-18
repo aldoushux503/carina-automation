@@ -8,7 +8,7 @@ import com.zebrunner.carina.api.http.HttpResponseStatusType;
 import com.zebrunner.carina.utils.config.Configuration;
 
 @Header(key = "Content-Type", value = "application/x-www-form-urlencoded")
-@Endpoint(url = "${base_url}/searchProduct", methodType = HttpMethodType.POST)
+@Endpoint(url = "${base_url}/searchProducts", methodType = HttpMethodType.POST)
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
 public class PostSearchProductMethod extends AbstractApiMethodV2 {
     public PostSearchProductMethod() {
