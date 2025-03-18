@@ -104,6 +104,10 @@ public class CartPage extends CartPageBase {
 
     @Override
     public boolean isProductInCart(String productName) {
+        if (getProductsInCart().size() <= 0) {
+            return false;
+        }
+
         for (ProductInfo product : getProductsInCart()) {
             if (product.getName().equals(productName)) {
                 return true;

@@ -96,19 +96,21 @@ public class ProductsPage extends ProductsPageBase {
         LOGGER.info("Adding product at index {} to cart", productIndex);
 
         try {
+            product.scrollTo();
             product.hover();
 
-            String elementId = String.format("//a[contains(@class, 'add-to-cart')]//a[@data-product-id='%d']",  productIndex+1);
+            String elementId = String.format("//a[@data-product-id='%d']", productIndex + 1);
             // Get the Add to cart button
             ExtendedWebElement addToCartButton = product.findExtendedWebElement(
-                    By.xpath(".//div[@class='product-overlay']"+elementId)
+                    By.xpath(".//div[@class='product-overlay']" + elementId)
             );
 
             LOGGER.info("Found add to cart button: {}", addToCartButton.isElementPresent());
+
             addToCartButton.click();
 
             // Wait for modal to appear
-            waitUntil(d -> isAddToCartModalVisible(), 10);
+            waitUntil(d -> isAddToCartModalVisible(), 3);
             LOGGER.info("Modal visible: {}", isAddToCartModalVisible());
         } catch (Exception e) {
             LOGGER.error("Error adding product to cart: {}", e.getMessage(), e);
@@ -126,7 +128,7 @@ public class ProductsPage extends ProductsPageBase {
             continueButton.click();
 
             // Wait for modal to disappear
-            waitUntil(d -> !isAddToCartModalVisible(), 10);
+            waitUntil(d -> !isAddToCartModalVisible(), 3);
         } catch (Exception e) {
             LOGGER.error("Error clicking continue shopping: {}", e.getMessage(), e);
             throw e;
@@ -138,8 +140,9 @@ public class ProductsPage extends ProductsPageBase {
         try {
             LOGGER.info("Clicking view cart button");
             ExtendedWebElement viewCartButton = findExtendedWebElement(
-                    By.xpath("//div[@class='modal-body']//a[contains(text(), 'View Cart')]")
+                    By.xpath("//a[contains(@href, 'view_cart')]")
             );
+            viewCartButton.scrollTo();
             viewCartButton.click();
             return initPage(getDriver(), CartPageBase.class);
         } catch (Exception e) {
@@ -156,9 +159,15 @@ public class ProductsPage extends ProductsPageBase {
 
         ExtendedWebElement product = productItems.get(productIndex);
         try {
+            product.scrollTo();
+
             LOGGER.info("Viewing product details at index {}", productIndex);
             ExtendedWebElement viewProductButton = product.findExtendedWebElement(
-                    By.xpath(".//a[contains(text(), 'View Product')]")
+                    By.xpath(
+                            String.format(
+                                    "//a[contains(@href, '/product_details/%d')]"
+                                    , productIndex + 1)
+                    )
             );
             viewProductButton.click();
 

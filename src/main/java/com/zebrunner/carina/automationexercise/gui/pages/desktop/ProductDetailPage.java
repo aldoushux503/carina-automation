@@ -22,10 +22,10 @@ public class ProductDetailPage extends ProductDetailPageBase {
     @FindBy(id = "quantity")
     private ExtendedWebElement quantityInput;
 
-    @FindBy(xpath = "//button[@type='button' and contains(text(), 'Add to cart')]")
+    @FindBy(xpath = "//button[@class='btn btn-default cart' and @type='button']")
     private ExtendedWebElement addToCartButton;
 
-    @FindBy(xpath = "//div[@class='modal-content']//a[contains(text(), 'View Cart')]")
+    @FindBy(xpath = "//p[@class='text-center']//a[contains(@href, 'view_cart')]")
     private ExtendedWebElement viewCartButton;
 
     @FindBy(xpath = "//div[@class='modal-content']//button[contains(text(), 'Continue Shopping')]")
@@ -53,7 +53,6 @@ public class ProductDetailPage extends ProductDetailPageBase {
 
     @Override
     public void setQuantity(int quantity) {
-        quantityInput.clear();
         quantityInput.type(String.valueOf(quantity));
     }
 
@@ -65,7 +64,7 @@ public class ProductDetailPage extends ProductDetailPageBase {
     @Override
     public void clickAddToCart() {
         addToCartButton.click();
-        waitUntil(d -> viewCartButton.isElementPresent(), 10);
+        waitUntil(d -> viewCartButton.isElementPresent(), 3);
     }
 
     @Override
