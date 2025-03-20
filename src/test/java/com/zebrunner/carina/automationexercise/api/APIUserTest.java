@@ -1,4 +1,4 @@
-package com.zebrunner.carina.automationexercise;
+package com.zebrunner.carina.automationexercise.api;
 
 import com.zebrunner.agent.core.annotation.Priority;
 import com.zebrunner.carina.automationexercise.api.DeleteUserMethod;

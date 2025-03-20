@@ -1,14 +1,9 @@
-package com.zebrunner.carina.automationexercise;
+package com.zebrunner.carina.automationexercise.api;
 
-import com.zebrunner.carina.automationexercise.api.GetProductsListMethod;
-import com.zebrunner.carina.automationexercise.api.PostCreateUser;
-import com.zebrunner.carina.automationexercise.api.PostLoginMethods;
-import com.zebrunner.carina.automationexercise.api.PostSearchProductMethod;
 import com.zebrunner.carina.core.IAbstractTest;
-import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import org.testng.annotations.Test;
 
-public class APITasksTest implements IAbstractTest {
+public class APIProductTest implements IAbstractTest {
 
     @Test()
     public void testGetAllProducts() {

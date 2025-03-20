@@ -1,21 +1,14 @@
-package com.zebrunner.carina.automationexercise;
+package com.zebrunner.carina.automationexercise.web;
 
 import com.zebrunner.carina.automationexercise.gui.pages.common.CartPageBase;
 import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.core.IAbstractTest;
-import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
-import com.zebrunner.carina.core.registrar.tag.Priority;
-import com.zebrunner.carina.core.registrar.tag.TestPriority;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Tests for subscription functionality
- */
 public class WebSubscriptionTest implements IAbstractTest {
 
     private HomePageBase homePage;
@@ -27,11 +20,9 @@ public class WebSubscriptionTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
     }
 
-
-    @Test(dataProvider = "subscriptionProvider")
+    @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInHomePage(String testId, String email) {
         homePage.scrollToSubscription();
-
         Assert.assertTrue(homePage.isSubscriptionSectionVisible(),
                 "Subscription section is not visible in home page");
 
@@ -41,13 +32,12 @@ public class WebSubscriptionTest implements IAbstractTest {
                 "Subscription success message is not visible");
     }
 
-    @Test(dataProvider = "subscriptionProvider")
+    @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInCartPage(String testId, String email) {
         CartPageBase cartPage = homePage.getCartPage();
         Assert.assertTrue(cartPage.isPageOpened(), "Cart page is not opened");
 
         cartPage.scrollToSubscription();
-
         Assert.assertTrue(cartPage.isSubscriptionSectionVisible(),
                 "Subscription section is not visible in cart page");
 
@@ -57,46 +47,40 @@ public class WebSubscriptionTest implements IAbstractTest {
                 "Subscription success message is not visible");
     }
 
-    @DataProvider()
-    public Object[][] subscriptionProvider() {
-        return new Object[][]{
-                {"Subscription test - 1", "test_" + RandomStringUtils.randomAlphanumeric(6) + "@example.com"},
-        };
-    }
-
-    @Test(dataProvider = "invalidSubscriptionProvider")
+    @Test(dataProvider = "invalidEmailProvider")
     public void testInvalidSubscriptionInHomePage(String testId, String invalidEmail) {
         homePage.scrollToSubscription();
-
-        Assert.assertTrue(homePage.isSubscriptionSectionVisible(),
-                "Subscription section is not visible in home page");
 
         homePage.subscribeWithEmail(invalidEmail);
 
         Assert.assertFalse(homePage.isSubscriptionSuccessMessageVisible(),
-                "Subscription success message is not visible");
+                "Subscription success message should not be visible");
     }
 
-    @Test(dataProvider = "invalidSubscriptionProvider")
+    @Test(dataProvider = "invalidEmailProvider")
     public void testInvalidSubscriptionInCartPage(String testId, String invalidEmail) {
         CartPageBase cartPage = homePage.getCartPage();
         Assert.assertTrue(cartPage.isPageOpened(), "Cart page is not opened");
 
         cartPage.scrollToSubscription();
 
-        Assert.assertTrue(cartPage.isSubscriptionSectionVisible(),
-                "Subscription section is not visible in cart page");
-
         cartPage.subscribeWithEmail(invalidEmail);
 
         Assert.assertFalse(cartPage.isSubscriptionSuccessMessageVisible(),
-                "Subscription success message is not visible");
+                "Subscription success message should not be visible");
     }
 
-    @DataProvider()
-    public Object[][] invalidSubscriptionProvider() {
+    @DataProvider(name = "validEmailProvider")
+    public Object[][] validEmailProvider() {
         return new Object[][]{
-                {"Invalid Subscription test - 1", "invalidemail"},
+                {"Valid subscription", "test_" + RandomStringUtils.randomAlphanumeric(6) + "@example.com"},
+        };
+    }
+
+    @DataProvider(name = "invalidEmailProvider")
+    public Object[][] invalidEmailProvider() {
+        return new Object[][]{
+                {"Invalid subscription", "invalidemail"},
         };
     }
 }
