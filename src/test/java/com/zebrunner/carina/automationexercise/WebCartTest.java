@@ -39,6 +39,8 @@ public class WebCartTest implements IAbstractTest {
         LOGGER.info("Products page opened successfully");
     }
 
+//    @Test
+//    public void testGetProduct
 
     @Test
     public void testAddProductsToCart() {
@@ -70,12 +72,10 @@ public class WebCartTest implements IAbstractTest {
         List<ProductInfo> cartProducts = cartPage.getProductsInCart();
         LOGGER.info("Products in cart: {}", cartProducts.size());
 
-        boolean firstProductFound = cartPage.isProductInCart(firstProduct.getName());
-        boolean secondProductFound = cartPage.isProductInCart(secondProduct.getName());
 
-        Assert.assertTrue(firstProductFound,
+        Assert.assertTrue(cartPage.isProductInCart(firstProduct.getName()),
                 "First product not found in cart: " + firstProduct.getName());
-        Assert.assertTrue(secondProductFound,
+        Assert.assertTrue(cartPage.isProductInCart(secondProduct.getName()),
                 "Second product not found in cart: " + secondProduct.getName());
     }
 

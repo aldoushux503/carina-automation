@@ -7,21 +7,26 @@ import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.invoke.MethodHandles;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = CartPageBase.class)
 public class CartPage extends CartPageBase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final String CART_ITEM_ROW_XPATH = "//table[@id='cart_info_table']//tbody//tr[@id='product-%d']";
+    private static final String PRODUCT_NAME_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_description']/h4/a";
+    private static final String PRODUCT_PRICE_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_price']/p";
+    private static final String PRODUCT_QUANTITY_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_quantity']/button";
+    private static final String PRODUCT_TOTAL_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_total']/p[@class='cart_total_price']";
+    private static final String PRODUCT_DELETE_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_delete']/a[@data-product-id='%d']";
 
-    @FindBy(xpath = "//div[@class='table-responsive cart_info']")
+    @FindBy(id = "cart_info")
     private ExtendedWebElement cartInfo;
 
-    @FindBy(xpath = "//h2[contains(text(),'Subscription')]")
+    @FindBy(xpath = "//h2[text()='Subscription']")
     private ExtendedWebElement subscriptionTitle;
 
     @FindBy(id = "susbscribe_email")
@@ -30,10 +35,10 @@ public class CartPage extends CartPageBase {
     @FindBy(id = "subscribe")
     private ExtendedWebElement subscribeButton;
 
-    @FindBy(xpath = "//div[@class='alert-success alert']")
+    @FindBy(xpath = "//div[@id='success-subscribe']//div[@class='alert-success alert']")
     private ExtendedWebElement subscriptionSuccessMessage;
 
-    @FindBy(xpath = "//tbody//tr")
+    @FindBy(xpath = "//table[@id='cart_info_table']//tbody//tr[starts-with(@id, 'product-')]")
     private List<ExtendedWebElement> cartItems;
 
     @FindBy(id = "empty_cart")
@@ -65,7 +70,9 @@ public class CartPage extends CartPageBase {
     @Override
     public boolean isSubscriptionSuccessMessageVisible() {
         return subscriptionSuccessMessage.isElementPresent() &&
-                subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!");
+                subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!") &&
+                findExtendedWebElement(By.id("success-subscribe")).getAttribute("class").contains("form-group") &&
+                !findExtendedWebElement(By.id("success-subscribe")).getAttribute("class").contains("hide");
     }
 
     @Override
@@ -73,8 +80,11 @@ public class CartPage extends CartPageBase {
         List<ProductInfo> products = new ArrayList<>();
 
         for (ExtendedWebElement item : cartItems) {
-            String name = item.findExtendedWebElement(By.xpath(".//h4/a")).getText();
-            String price = item.findExtendedWebElement(By.xpath(".//td[@class='cart_price']/p")).getText();
+            String id = item.getAttribute("id").replace("product-", "");
+            int productId = Integer.parseInt(id);
+
+            String name = getProductNameElement(productId).getText();
+            String price = getProductPriceElement(productId).getText();
             products.add(new ProductInfo(name, price));
         }
 
@@ -86,10 +96,13 @@ public class CartPage extends CartPageBase {
         Map<String, Map<String, String>> productDetails = new HashMap<>();
 
         for (ExtendedWebElement item : cartItems) {
-            String name = item.findExtendedWebElement(By.xpath(".//h4/a")).getText();
-            String price = item.findExtendedWebElement(By.xpath(".//td[@class='cart_price']/p")).getText();
-            String quantity = item.findExtendedWebElement(By.xpath(".//td[@class='cart_quantity']/button")).getText();
-            String total = item.findExtendedWebElement(By.xpath(".//td[@class='cart_total']/p")).getText();
+            String id = item.getAttribute("id").replace("product-", "");
+            int productId = Integer.parseInt(id);
+
+            String name = getProductNameElement(productId).getText();
+            String price = getProductPriceElement(productId).getText();
+            String quantity = getProductQuantityElement(productId).getText();
+            String total = getProductTotalElement(productId).getText();
 
             Map<String, String> details = new HashMap<>();
             details.put("price", price);
@@ -104,33 +117,48 @@ public class CartPage extends CartPageBase {
 
     @Override
     public boolean isProductInCart(String productName) {
-        if (getProductsInCart().size() <= 0) {
-            return false;
-        }
-
-        for (ProductInfo product : getProductsInCart()) {
-            if (product.getName().equals(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return getProductsInCart().stream()
+                .anyMatch(product -> product.getName().equals(productName));
     }
 
     @Override
     public void removeProduct(String productName) {
         for (ExtendedWebElement item : cartItems) {
-            ExtendedWebElement itemName = item.findExtendedWebElement(By.xpath(".//h4/a"));
-            if (itemName.getText().equals(productName)) {
-                ExtendedWebElement deleteButton = item.findExtendedWebElement(By.xpath(".//td[@class='cart_delete']/a"));
-                deleteButton.click();
+            String id = item.getAttribute("id").replace("product-", "");
+            int productId = Integer.parseInt(id);
+
+            if (getProductNameElement(productId).getText().equals(productName)) {
+                getProductDeleteElement(productId).click();
+                waitUntil(d -> item.isElementNotPresent(3), 3);
                 return;
             }
         }
-        LOGGER.warn("Product '{}' not found in cart", productName);
     }
 
     @Override
     public boolean isCartEmpty() {
-        return emptyCartMessage.isElementPresent();
+        return emptyCartMessage.isElementPresent() &&
+                emptyCartMessage.isVisible() &&
+                emptyCartMessage.getAttribute("style").contains("display: block");
+    }
+
+    private ExtendedWebElement getProductNameElement(int index) {
+        return findExtendedWebElement(By.xpath(String.format(PRODUCT_NAME_XPATH, index)));
+    }
+
+    private ExtendedWebElement getProductPriceElement(int index) {
+        return findExtendedWebElement(By.xpath(String.format(PRODUCT_PRICE_XPATH, index)));
+    }
+
+    private ExtendedWebElement getProductQuantityElement(int index) {
+        return findExtendedWebElement(By.xpath(String.format(PRODUCT_QUANTITY_XPATH, index)));
+    }
+
+    private ExtendedWebElement getProductTotalElement(int index) {
+        return findExtendedWebElement(By.xpath(String.format(PRODUCT_TOTAL_XPATH, index)));
+    }
+
+    private ExtendedWebElement getProductDeleteElement(int index) {
+        return findExtendedWebElement(By.xpath(String.format(PRODUCT_DELETE_XPATH, index, index)));
     }
 }
