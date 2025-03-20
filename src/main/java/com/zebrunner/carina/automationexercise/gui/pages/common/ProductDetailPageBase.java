@@ -32,4 +32,16 @@ public abstract class ProductDetailPageBase extends AbstractPage {
     public abstract CartPageBase clickViewCart();
 
     public abstract void clickContinueShopping();
+
+    public abstract boolean isReviewSectionVisible();
+
+    public abstract void inputReviewName(String name);
+
+    public abstract void inputReviewEmail(String email);
+
+    public abstract void inputReviewText(String review);
+
+    public abstract void submitReview();
+
+    public abstract boolean isReviewSuccessMessageVisible();
 }

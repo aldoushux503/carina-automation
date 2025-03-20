@@ -110,10 +110,16 @@ public class ProductsPage extends ProductsPageBase {
 
     @Override
     public boolean areSearchResultsVisible(String searchTerm) {
-        return featuresItems.isElementPresent() &&
-                !productItems.isEmpty() &&
-                productItems.stream()
-                        .allMatch(item -> item.getText().toLowerCase().contains(searchTerm.toLowerCase()));
+        if(!featuresItems.isElementPresent() && productItems.isEmpty()) {
+            return false;
+        }
+
+        for (ProductInfo product : getProducts()) {
+            if(product.getName().contains(searchTerm)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

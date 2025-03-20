@@ -31,6 +31,31 @@ public class ProductDetailPage extends ProductDetailPageBase {
     @FindBy(xpath = "//div[@class='modal-content']//button[contains(text(), 'Continue Shopping')]")
     private ExtendedWebElement continueShoppingButton;
 
+    // Review section elements
+    @FindBy(xpath = "//div[@id='reviews']")
+    private ExtendedWebElement reviewSection;
+
+    @FindBy(xpath = "//a[contains(@href, '#reviews') and contains(text(), 'Write Your Review')]")
+    private ExtendedWebElement writeYourReviewTab;
+
+    @FindBy(id = "name")
+    private ExtendedWebElement reviewNameInput;
+
+    @FindBy(id = "email")
+    private ExtendedWebElement reviewEmailInput;
+
+    @FindBy(id = "review")
+    private ExtendedWebElement reviewTextInput;
+
+    @FindBy(id = "button-review")
+    private ExtendedWebElement submitReviewButton;
+
+    @FindBy(id = "review-section")
+    private ExtendedWebElement reviewSuccessSection;
+
+    @FindBy(xpath = "//div[@id='review-section']//div[contains(@class, 'alert-success')]")
+    private ExtendedWebElement reviewSuccessMessage;
+
     public ProductDetailPage(WebDriver driver) {
         super(driver);
         setUiLoadedMarker(productInformation);
@@ -76,5 +101,41 @@ public class ProductDetailPage extends ProductDetailPageBase {
     @Override
     public void clickContinueShopping() {
         continueShoppingButton.click();
+    }
+
+    @Override
+    public boolean isReviewSectionVisible() {
+        return writeYourReviewTab.isElementPresent() &&
+                writeYourReviewTab.isVisible() &&
+                reviewSection.isElementPresent();
+    }
+
+    @Override
+    public void inputReviewName(String name) {
+        reviewNameInput.type(name);
+    }
+
+    @Override
+    public void inputReviewEmail(String email) {
+        reviewEmailInput.type(email);
+    }
+
+    @Override
+    public void inputReviewText(String reviewText) {
+        reviewTextInput.type(reviewText);
+    }
+
+    @Override
+    public void submitReview() {
+        submitReviewButton.scrollTo();
+        submitReviewButton.click();
+        waitUntil(d -> isReviewSuccessMessageVisible(), 3);
+    }
+
+    @Override
+    public boolean isReviewSuccessMessageVisible() {
+        return !reviewSuccessSection.getAttribute("class").contains("hide") &&
+                reviewSuccessMessage.isElementPresent() &&
+                reviewSuccessMessage.getText().contains("Thank you for your review");
     }
 }
