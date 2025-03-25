@@ -44,7 +44,6 @@ public class WebCrossBrowserTest implements IAbstractTest {
     }
 
     @Test
-    @MethodOwner(owner = "AutomationExercise")
     public void testSubscriptionOnBrowser() {
         homePage.scrollToSubscription();
         Assert.assertTrue(homePage.isSubscriptionSectionVisible(),
@@ -58,7 +57,6 @@ public class WebCrossBrowserTest implements IAbstractTest {
     }
 
     @Test
-    @MethodOwner(owner = "AutomationExercise")
     public void testRecommendedItemsOnBrowser() {
         homePage.scrollToRecommendedItems();
         Assert.assertTrue(homePage.isRecommendedItemsSectionVisible(),

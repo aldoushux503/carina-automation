@@ -23,7 +23,7 @@ public class WebSubscriptionTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
     }
 
-    @Test(dataProvider = "validEmailProvider", description = "Verify subscription in home page with valid email")
+    @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInHomePage(String testId, String email) {
         homePage.scrollToSubscription();
         Assert.assertTrue(homePage.isSubscriptionSectionVisible(),
@@ -35,7 +35,7 @@ public class WebSubscriptionTest implements IAbstractTest {
                 "Subscription success message is not visible after submitting valid email");
     }
 
-    @Test(dataProvider = "validEmailProvider", description = "Verify subscription in cart page with valid email")
+    @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInCartPage(String testId, String email) {
         CartPageBase cartPage = homePage.getCartPage();
         Assert.assertTrue(cartPage.isPageOpened(), "Cart page failed to load");
@@ -50,7 +50,7 @@ public class WebSubscriptionTest implements IAbstractTest {
                 "Subscription success message is not visible after submitting valid email in cart page");
     }
 
-    @Test(dataProvider = "invalidEmailProvider", description = "Verify subscription fails with invalid email in home page")
+    @Test(dataProvider = "invalidEmailProvider")
     public void testInvalidSubscriptionInHomePage(String testId, String invalidEmail) {
         homePage.scrollToSubscription();
 
@@ -60,7 +60,7 @@ public class WebSubscriptionTest implements IAbstractTest {
                 "Subscription success message should not be visible with invalid email format");
     }
 
-    @Test(dataProvider = "invalidEmailProvider", description = "Verify subscription fails with invalid email in cart page")
+    @Test(dataProvider = "invalidEmailProvider")
     public void testInvalidSubscriptionInCartPage(String testId, String invalidEmail) {
         CartPageBase cartPage = homePage.getCartPage();
         Assert.assertTrue(cartPage.isPageOpened(), "Cart page failed to load");

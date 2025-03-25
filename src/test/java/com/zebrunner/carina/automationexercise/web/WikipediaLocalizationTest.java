@@ -13,8 +13,6 @@ import org.testng.annotations.Test;
 
 public class WikipediaLocalizationTest implements IAbstractTest {
 
-
-
     @Test(dataProvider = "languages")
     public void testMainPageTitleLocalization(String locale, String language) {
         R.CONFIG.put("locale", locale, true);

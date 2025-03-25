@@ -28,7 +28,7 @@ public class WebProductTest implements IAbstractTest {
         Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
     }
 
-    @Test(dataProvider = "searchTerms", description = "Verify product search functionality")
+    @Test(dataProvider = "searchTerms")
     public void testProductSearch(String testId, String searchTerm) {
         productsPage.searchProducts(searchTerm);
         productsPage.clickSubmitSearchButton();
@@ -37,7 +37,7 @@ public class WebProductTest implements IAbstractTest {
                 "Search results are not visible for term: " + searchTerm);
     }
 
-    @Test(dataProvider = "reviewData", description = "Verify adding product reviews")
+    @Test(dataProvider = "reviewData")
     public void testAddProductReview(String testId, int productIndex, String name, String email, String reviewText) {
         ProductDetailPageBase productDetailPage = productsPage.viewProductDetails(productIndex);
         Assert.assertTrue(productDetailPage.isProductDetailPageOpened(),

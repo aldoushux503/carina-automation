@@ -26,20 +26,32 @@ public class WebCryptoSampleTest implements IAbstractTest {
 
     @Test
     public void testEncryptNewValue() {
-        String newPassword = "1234";
-        String encryptedPassword = cryptoTool.encrypt(newPassword);
-
-        System.out.println("Original password: " + newPassword);
-        System.out.println("Encrypted password: " + encryptedPassword);
-        System.out.println("For configuration use: {crypt:" + encryptedPassword + "}");
+        String originalPassword = "1234";
+        String encryptedPassword = cryptoTool.encrypt(originalPassword);
 
         String decryptedPassword = cryptoTool.decrypt(encryptedPassword);
-        Assert.assertEquals(decryptedPassword, newPassword);
+        Assert.assertEquals(decryptedPassword, originalPassword,
+                "Decrypted password should match the original password");
     }
 
     @Test
-    public void testEncryptionToolUsage() {
-        String decryptedManually = cryptoTool.decrypt("8O9iA4+f3nMzz85szmvKmQ==");
-        Assert.assertEquals(decryptedManually, "EncryptMe");
+    public void testDecryptPredefinedValue() {
+        String expectedValue = "EncryptMe";
+        String encryptedValue = "8O9iA4+f3nMzz85szmvKmQ==";
+
+        String decryptedValue = cryptoTool.decrypt(encryptedValue);
+        Assert.assertEquals(decryptedValue, expectedValue,
+                "Decrypted value should match the expected value");
     }
+
+    @Test
+    public void testEncryptWithSpecialCharacters() {
+        String originalText = "Password!@#$%^&*()";
+        String encryptedText = cryptoTool.encrypt(originalText);
+
+        String decryptedText = cryptoTool.decrypt(encryptedText);
+        Assert.assertEquals(decryptedText, originalText,
+                "Decrypted text with special characters should match the original");
+    }
+
 }

@@ -21,7 +21,7 @@ public class WebRecommendedItemsTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
     }
 
-    @Test(description = "Verify adding recommended item to cart")
+    @Test
     public void testAddRecommendedItemToCart() {
         homePage.scrollToRecommendedItems();
 

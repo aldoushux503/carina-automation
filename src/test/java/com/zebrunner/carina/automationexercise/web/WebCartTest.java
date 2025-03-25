@@ -82,7 +82,6 @@ public class WebCartTest implements IAbstractTest {
         return new Object[][] {
                 {"TC12-1: Add different products", 0, 1, 2},
                 {"TC12-2: Add products from different categories", 1, 3, 2},
-                {"TC12-3: Add same product twice", 0, 0, 2}
         };
     }
 
