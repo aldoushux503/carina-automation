@@ -3,15 +3,13 @@ package com.zebrunner.carina.automationexercise.web;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.WikipediaHomePage;
 import com.zebrunner.carina.automationexercise.gui.pages.desktop.WikipediaLocalePage;
 import com.zebrunner.carina.core.IAbstractTest;
-import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import com.zebrunner.carina.utils.R;
 import com.zebrunner.carina.utils.resources.L10N;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class WikipediaLocalizationTest implements IAbstractTest {
+public class WebWikipediaLocalizationTest implements IAbstractTest {
 
     @Test(dataProvider = "languages")
     public void testMainPageTitleLocalization(String locale, String language) {
