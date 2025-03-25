@@ -7,33 +7,36 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+/**
+ * Tests for recommended items functionality
+ */
 public class WebRecommendedItemsTest implements IAbstractTest {
 
     private HomePageBase homePage;
 
     @BeforeMethod
-    public void startDriver() {
+    public void setUp() {
         homePage = initPage(getDriver(), HomePageBase.class);
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
     }
 
-    @Test
+    @Test(description = "Verify adding recommended item to cart")
     public void testAddRecommendedItemToCart() {
         homePage.scrollToRecommendedItems();
 
         Assert.assertTrue(homePage.isRecommendedItemsSectionVisible(),
-                "Recommended items section is not visible");
+                "Recommended items section should be visible on home page");
 
         String productName = homePage.getRecommendedItemName(0);
+        Assert.assertFalse(productName.isEmpty(), "Product name should not be empty");
 
         homePage.addRecommendedItemToCart(0);
 
         CartPageBase cartPage = homePage.clickViewCartFromModal();
-        Assert.assertTrue(cartPage.isPageOpened(), "Cart page is not opened");
-
+        Assert.assertTrue(cartPage.isPageOpened(), "Cart page failed to load");
 
         Assert.assertTrue(cartPage.isProductInCart(productName),
-                "Product '" + productName + "' is not displayed in cart page");
+                "Product '" + productName + "' should be present in cart after adding from recommended items");
     }
 }

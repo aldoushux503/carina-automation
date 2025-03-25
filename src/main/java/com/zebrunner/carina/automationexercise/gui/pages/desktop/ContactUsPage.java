@@ -12,27 +12,27 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.lang.invoke.MethodHandles;
 
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = HomePageBase.class)
 public class ContactUsPage extends ContactUsPageBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     @FindBy(xpath = "//h2[contains(@class, 'title text-center')]")
-    private ExtendedWebElement getInTouchTitle;
+    private ExtendedWebElement getInTouchTitleText;
 
     @FindBy(xpath = "//input[contains(@placeholder, 'Name')]")
-    private ExtendedWebElement namePlaceHolder;
+    private ExtendedWebElement nameInputField;
 
     @FindBy(xpath = "//input[contains(@placeholder, 'Email')]")
-    private ExtendedWebElement emailPlaceHolder;
+    private ExtendedWebElement emailInputField;
 
     @FindBy(xpath = "//input[contains(@placeholder, 'Subject')]")
-    private ExtendedWebElement subjectPlaceHolder;
+    private ExtendedWebElement subjectInputField;
 
     @FindBy(xpath = "//textarea[contains(@placeholder, 'Your Message Here')]")
-    private ExtendedWebElement messagePlaceHolder;
+    private ExtendedWebElement messageTextareaField;
 
     @FindBy(xpath = "//input[contains(@name, 'upload_file')]")
     private ExtendedWebElement uploadFileInput;
@@ -40,37 +40,37 @@ public class ContactUsPage extends ContactUsPageBase {
     @FindBy(xpath = "//input[contains(@name, 'submit')]")
     private ExtendedWebElement submitButton;
 
-
     @FindBy(xpath = "//div[contains(text(),'Success! Your details have been submitted successfully.')]")
-    private ExtendedWebElement successMessage;
+    private ExtendedWebElement successMessageText;
 
     public ContactUsPage(WebDriver driver) {
         super(driver);
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
-        setUiLoadedMarker(getInTouchTitle);
+        setUiLoadedMarker(getInTouchTitleText);
     }
 
     @Override
     public void inputName(String name) {
-        namePlaceHolder.click();
-        namePlaceHolder.type(name);
+        nameInputField.click();
+        nameInputField.type(name);
     }
+
     @Override
     public void inputEmail(String email) {
-        emailPlaceHolder.click();
-        emailPlaceHolder.type(email);
+        emailInputField.click();
+        emailInputField.type(email);
     }
 
     @Override
     public void inputSubject(String subject) {
-        subjectPlaceHolder.click();
-        subjectPlaceHolder.type(subject);
+        subjectInputField.click();
+        subjectInputField.type(subject);
     }
 
     @Override
     public void inputMessage(String message) {
-        messagePlaceHolder.click();
-        messagePlaceHolder.type(message);
+        messageTextareaField.click();
+        messageTextareaField.type(message);
     }
 
     @Override
@@ -85,8 +85,15 @@ public class ContactUsPage extends ContactUsPageBase {
         acceptAlert(5);
     }
 
+    @Override
+    public boolean isSuccessMessageVisible() {
+        return successMessageText.isElementPresent();
+    }
+
     /**
      * Helper method to accept an alert with better error handling
+     *
+     * @param timeoutInSeconds maximum time to wait for alert
      */
     private void acceptAlert(int timeoutInSeconds) {
         try {
@@ -95,10 +102,5 @@ public class ContactUsPage extends ContactUsPageBase {
         } catch (Exception e) {
             LOGGER.warn("No alert present or could not be accepted", e);
         }
-    }
-
-    @Override
-    public boolean isSuccessMessageVisible() {
-        return successMessage.isElementPresent();
     }
 }

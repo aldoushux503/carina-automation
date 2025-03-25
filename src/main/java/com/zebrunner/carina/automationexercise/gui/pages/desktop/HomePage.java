@@ -20,10 +20,10 @@ public class HomePage extends HomePageBase {
     private TopMenu topMenu;
 
     @FindBy(xpath = "//div[contains(@class, 'features_items')]")
-    private ExtendedWebElement featuresItems;
+    private ExtendedWebElement featuresItemsSection;
 
     @FindBy(xpath = "//h2[contains(text(),'Subscription')]")
-    private ExtendedWebElement subscriptionTitle;
+    private ExtendedWebElement subscriptionTitleText;
 
     @FindBy(id = "susbscribe_email")
     private ExtendedWebElement subscribeEmailField;
@@ -32,23 +32,23 @@ public class HomePage extends HomePageBase {
     private ExtendedWebElement subscribeButton;
 
     @FindBy(xpath = "//div[@class='alert-success alert']")
-    private ExtendedWebElement subscriptionSuccessMessage;
+    private ExtendedWebElement subscriptionSuccessMessageText;
 
     @FindBy(xpath = "//div[@class='recommended_items']")
     private ExtendedWebElement recommendedItemsSection;
 
     @FindBy(xpath = "//h2[contains(text(),'recommended items')]")
-    private ExtendedWebElement recommendedItemsTitle;
+    private ExtendedWebElement recommendedItemsTitleText;
 
     @FindBy(xpath = "//div[@class='modal-content']//a[contains(@href, 'view_cart')]")
     private ExtendedWebElement viewCartModalButton;
 
     @FindBy(xpath = "//p[@class='fc-button-label']")
-    private ExtendedWebElement acceptCookie;
+    private ExtendedWebElement acceptCookieButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
-        setUiLoadedMarker(featuresItems);
+        setUiLoadedMarker(featuresItemsSection);
     }
 
     @Override
@@ -73,13 +73,13 @@ public class HomePage extends HomePageBase {
 
     @Override
     public void scrollToSubscription() {
-        subscriptionTitle.scrollTo();
+        subscriptionTitleText.scrollTo();
     }
 
     @Override
     public boolean isSubscriptionSectionVisible() {
-        return subscriptionTitle.isElementPresent() &&
-                subscriptionTitle.getText().equals("SUBSCRIPTION");
+        return subscriptionTitleText.isElementPresent() &&
+                subscriptionTitleText.getText().equals("SUBSCRIPTION");
     }
 
     @Override
@@ -90,14 +90,14 @@ public class HomePage extends HomePageBase {
 
     @Override
     public boolean isSubscriptionSuccessMessageVisible() {
-        return subscriptionSuccessMessage.isElementPresent() &&
-                subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!");
+        return subscriptionSuccessMessageText.isElementPresent() &&
+                subscriptionSuccessMessageText.getText().contains("You have been successfully subscribed!");
     }
 
     @Override
     public boolean isRecommendedItemsSectionVisible() {
-        return recommendedItemsTitle.isElementPresent() &&
-                recommendedItemsTitle.getText().equalsIgnoreCase("RECOMMENDED ITEMS");
+        return recommendedItemsTitleText.isElementPresent() &&
+                recommendedItemsTitleText.getText().equalsIgnoreCase("RECOMMENDED ITEMS");
     }
 
     @Override
@@ -127,7 +127,7 @@ public class HomePage extends HomePageBase {
     @Override
     public void open() {
         super.open();
-        acceptCookie.clickIfPresent(3);
+        acceptCookieButton.clickIfPresent(3);
     }
 
     private ExtendedWebElement getRecommendedItemNameElement(int index) {
@@ -139,8 +139,6 @@ public class HomePage extends HomePageBase {
     }
 
     private void validateRecommendedItemIndex(int index) {
-        // This validation assumes we have at least one recommended item,
-        // but we don't know the exact count without querying the DOM
         if (index < 0) {
             throw new IllegalArgumentException("Index must be non-negative: " + index);
         }

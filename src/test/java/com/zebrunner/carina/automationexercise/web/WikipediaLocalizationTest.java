@@ -13,16 +13,11 @@ import org.testng.annotations.Test;
 
 public class WikipediaLocalizationTest implements IAbstractTest {
 
-    @BeforeMethod
-    public void setUpLocalization() {
-        // Enable localization testing
-        R.CONFIG.put("localization_testing", "true");
-    }
+
 
     @Test(dataProvider = "languages")
     public void testMainPageTitleLocalization(String locale, String language) {
         R.CONFIG.put("locale", locale, true);
-        L10N.setLocale(locale);
         L10N.load();
 
         WikipediaHomePage homePage = new WikipediaHomePage(getDriver());
@@ -53,7 +48,6 @@ public class WikipediaLocalizationTest implements IAbstractTest {
     @Test(dataProvider = "languages")
     public void testSearchFunctionalityLocalization(String locale, String language) {
         R.CONFIG.put("locale", locale, true);
-        L10N.setLocale(locale);
         L10N.load();
         WikipediaHomePage homePage = new WikipediaHomePage(getDriver());
         homePage.open();

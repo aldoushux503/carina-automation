@@ -10,54 +10,56 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+/**
+ * Tests for product search and review functionality
+ */
 public class WebProductTest implements IAbstractTest {
 
     private HomePageBase homePage;
     private ProductsPageBase productsPage;
 
     @BeforeMethod
-    public void startDriver() {
+    public void setUp() {
         homePage = initPage(getDriver(), HomePageBase.class);
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
 
         productsPage = homePage.getProductsPage();
-        Assert.assertTrue(productsPage.isPageOpened(), "Products page is not opened");
+        Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
     }
 
-    @Test(dataProvider = "searchTerms")
+    @Test(dataProvider = "searchTerms", description = "Verify product search functionality")
     public void testProductSearch(String testId, String searchTerm) {
         productsPage.searchProducts(searchTerm);
         productsPage.clickSubmitSearchButton();
 
         Assert.assertTrue(productsPage.areSearchResultsVisible(searchTerm),
-                "No search results are visible for term: " + searchTerm);
+                "Search results are not visible for term: " + searchTerm);
     }
 
-    @Test(dataProvider = "reviewData")
+    @Test(dataProvider = "reviewData", description = "Verify adding product reviews")
     public void testAddProductReview(String testId, int productIndex, String name, String email, String reviewText) {
         ProductDetailPageBase productDetailPage = productsPage.viewProductDetails(productIndex);
         Assert.assertTrue(productDetailPage.isProductDetailPageOpened(),
-                "Product detail page is not opened");
+                "Product detail page failed to load");
 
         Assert.assertTrue(productDetailPage.isReviewSectionVisible(),
-                "Review section is not visible");
+                "Review section is not visible on product page");
 
         productDetailPage.inputReviewName(name);
         productDetailPage.inputReviewEmail(email);
         productDetailPage.inputReviewText(reviewText);
 
         productDetailPage.submitReview();
-
         Assert.assertTrue(productDetailPage.isReviewSuccessMessageVisible(),
-                "Review success message is not visible");
+                "Review success message is not visible after submission");
     }
 
     @DataProvider(name = "searchTerms")
     public Object[][] searchTerms() {
         return new Object[][] {
-                {"TC20-1: Search for category", "jean"},
-                {"TC20-2: Search for category", "top"}
+                {"TC20-1: Search for jeans category", "jean"},
+                {"TC20-2: Search for tops category", "top"}
         };
     }
 

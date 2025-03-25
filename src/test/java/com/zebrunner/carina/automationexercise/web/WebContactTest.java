@@ -4,46 +4,46 @@ import com.zebrunner.carina.automationexercise.gui.pages.common.ContactUsPageBas
 import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.core.IAbstractTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 
 public class WebContactTest implements IAbstractTest {
 
     private HomePageBase homePage;
 
-    @BeforeSuite
-    public void startDriver() {
+    @BeforeMethod
+    public void setUp() {
         homePage = initPage(getDriver(), HomePageBase.class);
-    }
-
-    @Test()
-    public void testOpenHomePage() {
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
+        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to open");
     }
 
-    @Test(dataProvider = "contactUsData", dependsOnMethods = "testOpenHomePage")
-    public void testContactUs(String testId, String name, String email,
-                              String subject, String message, String filePath) {
+    @Test(dataProvider = "contactUsData")
+    public void testContactFormSubmission(String testId, String name, String email,
+                                          String subject, String message, String filePath) {
         ContactUsPageBase contactUsPage = homePage.getContactUsPage();
+        Assert.assertTrue(contactUsPage.isPageOpened(), "Contact Us page failed to open");
 
-        Assert.assertTrue(contactUsPage.isPageOpened());
         contactUsPage.inputName(name);
         contactUsPage.inputEmail(email);
         contactUsPage.inputSubject(subject);
         contactUsPage.inputMessage(message);
         contactUsPage.attacheFile(filePath);
+
         contactUsPage.clickSubmitButton();
-        Assert.assertTrue(contactUsPage.isSuccessMessageVisible());
+        Assert.assertTrue(contactUsPage.isSuccessMessageVisible(),
+                "Success message should be visible after form submission");
     }
 
     @DataProvider(name = "contactUsData")
     public Object[][] contactUsData() {
         return new Object[][] {
-                {"ContactUs test - 1" ,"Albert", "Albert@gmail.com", "Math", "Hello world", "src/test/resources/files/icon.png"}
+                {"TC01: Valid Contact Form", "Albert Einstein", "albert@example.com",
+                        "Physics Question", "I have a question about relativity", "src/test/resources/files/icon.png"},
+                {"TC02: Different Subject", "Marie Curie", "marie@example.com",
+                        "Chemistry Query", "Question about radioactivity", "src/test/resources/files/icon.png"}
         };
     }
-
-
 }

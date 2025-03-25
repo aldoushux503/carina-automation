@@ -24,10 +24,10 @@ public class CartPage extends CartPageBase {
     private static final String PRODUCT_DELETE_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_delete']/a[@data-product-id='%d']";
 
     @FindBy(id = "cart_info")
-    private ExtendedWebElement cartInfo;
+    private ExtendedWebElement cartInfoTable;
 
     @FindBy(xpath = "//h2[text()='Subscription']")
-    private ExtendedWebElement subscriptionTitle;
+    private ExtendedWebElement subscriptionTitleText;
 
     @FindBy(id = "susbscribe_email")
     private ExtendedWebElement subscribeEmailField;
@@ -39,26 +39,26 @@ public class CartPage extends CartPageBase {
     private ExtendedWebElement subscriptionSuccessMessage;
 
     @FindBy(xpath = "//table[@id='cart_info_table']//tbody//tr[starts-with(@id, 'product-')]")
-    private List<ExtendedWebElement> cartItems;
+    private List<ExtendedWebElement> cartItemsList;
 
     @FindBy(id = "empty_cart")
     private ExtendedWebElement emptyCartMessage;
 
     public CartPage(WebDriver driver) {
         super(driver);
-        setUiLoadedMarker(cartInfo);
+        setUiLoadedMarker(cartInfoTable);
         setPageURL("/view_cart");
     }
 
     @Override
     public void scrollToSubscription() {
-        subscriptionTitle.scrollTo();
+        subscriptionTitleText.scrollTo();
     }
 
     @Override
     public boolean isSubscriptionSectionVisible() {
-        return subscriptionTitle.isElementPresent() &&
-                subscriptionTitle.getText().equals("SUBSCRIPTION");
+        return subscriptionTitleText.isElementPresent() &&
+                subscriptionTitleText.getText().equals("SUBSCRIPTION");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CartPage extends CartPageBase {
     public List<ProductInfo> getProductsInCart() {
         List<ProductInfo> products = new ArrayList<>();
 
-        for (ExtendedWebElement item : cartItems) {
+        for (ExtendedWebElement item : cartItemsList) {
             String id = item.getAttribute("id").replace("product-", "");
             int productId = Integer.parseInt(id);
 
@@ -95,7 +95,7 @@ public class CartPage extends CartPageBase {
     public Map<String, Map<String, String>> getProductDetails() {
         Map<String, Map<String, String>> productDetails = new HashMap<>();
 
-        for (ExtendedWebElement item : cartItems) {
+        for (ExtendedWebElement item : cartItemsList) {
             String id = item.getAttribute("id").replace("product-", "");
             int productId = Integer.parseInt(id);
 
@@ -123,7 +123,7 @@ public class CartPage extends CartPageBase {
 
     @Override
     public void removeProduct(String productName) {
-        for (ExtendedWebElement item : cartItems) {
+        for (ExtendedWebElement item : cartItemsList) {
             String id = item.getAttribute("id").replace("product-", "");
             int productId = Integer.parseInt(id);
 
@@ -142,6 +142,7 @@ public class CartPage extends CartPageBase {
                 emptyCartMessage.getAttribute("style").contains("display: block");
     }
 
+    // Private helper methods
     private ExtendedWebElement getProductNameElement(int index) {
         return findExtendedWebElement(By.xpath(String.format(PRODUCT_NAME_XPATH, index)));
     }

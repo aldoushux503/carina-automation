@@ -10,17 +10,18 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = ProductDetailPageBase.class)
 public class ProductDetailPage extends ProductDetailPageBase {
 
+    // Element declarations with descriptive names
     @FindBy(xpath = "//div[@class='product-information']")
-    private ExtendedWebElement productInformation;
+    private ExtendedWebElement productInformationBlock;
 
     @FindBy(xpath = "//div[@class='product-information']/h2")
-    private ExtendedWebElement productName;
+    private ExtendedWebElement productNameText;
 
     @FindBy(xpath = "//div[@class='product-information']/span/span")
-    private ExtendedWebElement productPrice;
+    private ExtendedWebElement productPriceText;
 
     @FindBy(id = "quantity")
-    private ExtendedWebElement quantityInput;
+    private ExtendedWebElement quantityInputField;
 
     @FindBy(xpath = "//button[@class='btn btn-default cart' and @type='button']")
     private ExtendedWebElement addToCartButton;
@@ -39,13 +40,13 @@ public class ProductDetailPage extends ProductDetailPageBase {
     private ExtendedWebElement writeYourReviewTab;
 
     @FindBy(id = "name")
-    private ExtendedWebElement reviewNameInput;
+    private ExtendedWebElement reviewNameInputField;
 
     @FindBy(id = "email")
-    private ExtendedWebElement reviewEmailInput;
+    private ExtendedWebElement reviewEmailInputField;
 
     @FindBy(id = "review")
-    private ExtendedWebElement reviewTextInput;
+    private ExtendedWebElement reviewTextInputField;
 
     @FindBy(id = "button-review")
     private ExtendedWebElement submitReviewButton;
@@ -54,36 +55,36 @@ public class ProductDetailPage extends ProductDetailPageBase {
     private ExtendedWebElement reviewSuccessSection;
 
     @FindBy(xpath = "//div[@id='review-section']//div[contains(@class, 'alert-success')]")
-    private ExtendedWebElement reviewSuccessMessage;
+    private ExtendedWebElement reviewSuccessMessageText;
 
     public ProductDetailPage(WebDriver driver) {
         super(driver);
-        setUiLoadedMarker(productInformation);
+        setUiLoadedMarker(productInformationBlock);
     }
 
     @Override
     public boolean isProductDetailPageOpened() {
-        return productInformation.isElementPresent();
+        return productInformationBlock.isElementPresent();
     }
 
     @Override
     public String getProductName() {
-        return productName.getText();
+        return productNameText.getText();
     }
 
     @Override
     public String getProductPrice() {
-        return productPrice.getText();
+        return productPriceText.getText();
     }
 
     @Override
     public void setQuantity(int quantity) {
-        quantityInput.type(String.valueOf(quantity));
+        quantityInputField.type(String.valueOf(quantity));
     }
 
     @Override
     public int getQuantity() {
-        return Integer.parseInt(quantityInput.getAttribute("value"));
+        return Integer.parseInt(quantityInputField.getAttribute("value"));
     }
 
     @Override
@@ -112,17 +113,17 @@ public class ProductDetailPage extends ProductDetailPageBase {
 
     @Override
     public void inputReviewName(String name) {
-        reviewNameInput.type(name);
+        reviewNameInputField.type(name);
     }
 
     @Override
     public void inputReviewEmail(String email) {
-        reviewEmailInput.type(email);
+        reviewEmailInputField.type(email);
     }
 
     @Override
     public void inputReviewText(String reviewText) {
-        reviewTextInput.type(reviewText);
+        reviewTextInputField.type(reviewText);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class ProductDetailPage extends ProductDetailPageBase {
     @Override
     public boolean isReviewSuccessMessageVisible() {
         return !reviewSuccessSection.getAttribute("class").contains("hide") &&
-                reviewSuccessMessage.isElementPresent() &&
-                reviewSuccessMessage.getText().contains("Thank you for your review");
+                reviewSuccessMessageText.isElementPresent() &&
+                reviewSuccessMessageText.getText().contains("Thank you for your review");
     }
 }

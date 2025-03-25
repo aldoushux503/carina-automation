@@ -2,23 +2,16 @@ package com.zebrunner.carina.automationexercise.web;
 
 import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
 import com.zebrunner.carina.automationexercise.gui.pages.common.ProductsPageBase;
-
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.HomePage;
-
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import com.zebrunner.carina.utils.R;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.lang.invoke.MethodHandles;
-
 /**
+ * Cross-browser tests for basic functionality
  * This test class demonstrates how to run the same tests on multiple browsers
- * using TestNG's data provider with our BrowserFactory
+ * using TestNG's data provider with BrowserFactory
  */
 public class WebCrossBrowserTest implements IAbstractTest {
 
@@ -38,8 +31,7 @@ public class WebCrossBrowserTest implements IAbstractTest {
     public static Object[][] getBrowsers() {
         return new Object[][] {
                 {"TC-B01: Chrome Browser Testing", "chrome"},
-                {"TC-B02: Firefox Browser Testing", "firefox"},
-
+                {"TC-B02: Firefox Browser Testing", "firefox"}
         };
     }
 
@@ -48,7 +40,7 @@ public class WebCrossBrowserTest implements IAbstractTest {
         homePage = initPage(getDriver(), HomePageBase.class);
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(),
-                String.format("[%s] Home page is not opened for browser: %s", testId, browser));
+                String.format("[%s] Home page failed to load on browser: %s", testId, browser));
     }
 
     @Test
