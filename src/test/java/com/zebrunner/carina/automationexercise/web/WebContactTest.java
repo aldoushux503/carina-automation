@@ -9,16 +9,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
-public class WebContactTest implements IAbstractTest {
-
-    private HomePageBase homePage;
-
-    @BeforeMethod
-    public void setUp() {
-        homePage = initPage(getDriver(), HomePageBase.class);
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to open");
-    }
+public class WebContactTest extends AbstractWebTest {
 
     @Test(dataProvider = "contactUsData")
     public void testContactFormSubmission(String testId, String name, String email,

@@ -12,16 +12,7 @@ import org.testng.annotations.Test;
 /**
  * Tests for newsletter subscription functionality
  */
-public class WebSubscriptionTest implements IAbstractTest {
-
-    private HomePageBase homePage;
-
-    @BeforeMethod
-    public void setUp() {
-        homePage = initPage(getDriver(), HomePageBase.class);
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
-    }
+public class WebSubscriptionTest extends AbstractWebTest {
 
     @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInHomePage(String testId, String email) {

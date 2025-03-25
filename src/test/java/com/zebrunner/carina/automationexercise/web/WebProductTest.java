@@ -13,19 +13,13 @@ import org.testng.annotations.Test;
 /**
  * Tests for product search and review functionality
  */
-public class WebProductTest implements IAbstractTest {
+public class WebProductTest extends AbstractWebTest {
 
-    private HomePageBase homePage;
     private ProductsPageBase productsPage;
 
-    @BeforeMethod
-    public void setUp() {
-        homePage = initPage(getDriver(), HomePageBase.class);
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
-
-        productsPage = homePage.getProductsPage();
-        Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
+    @Override
+    protected void additionalSetUp() {
+        productsPage = getVerifiedProductsPage();
     }
 
     @Test(dataProvider = "searchTerms")

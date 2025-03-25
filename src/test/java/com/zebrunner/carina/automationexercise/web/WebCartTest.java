@@ -10,19 +10,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class WebCartTest implements IAbstractTest {
+public class WebCartTest extends AbstractWebTest {
 
-    private HomePageBase homePage;
     private ProductsPageBase productsPage;
 
-    @BeforeMethod
-    public void setUp() {
-        homePage = initPage(getDriver(), HomePageBase.class);
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
-
-        productsPage = homePage.getProductsPage();
-        Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
+    @Override
+    protected void additionalSetUp() {
+        productsPage = getVerifiedProductsPage();
     }
 
     @Test(dataProvider = "productsToAdd")

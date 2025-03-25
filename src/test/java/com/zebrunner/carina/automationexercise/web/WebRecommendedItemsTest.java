@@ -10,16 +10,7 @@ import org.testng.annotations.Test;
 /**
  * Tests for recommended items functionality
  */
-public class WebRecommendedItemsTest implements IAbstractTest {
-
-    private HomePageBase homePage;
-
-    @BeforeMethod
-    public void setUp() {
-        homePage = initPage(getDriver(), HomePageBase.class);
-        homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
-    }
+public class WebRecommendedItemsTest extends AbstractWebTest {
 
     @Test
     public void testAddRecommendedItemToCart() {
