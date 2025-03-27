@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 public class TodoAppTest implements IAbstractTest, IMobileUtils {
 
-    private static final String TASK_PREFIX = "Task_";
     private static final int RANDOM_STRING_LENGTH = 5;
 
     private TodoAppPageBase todoPage;
