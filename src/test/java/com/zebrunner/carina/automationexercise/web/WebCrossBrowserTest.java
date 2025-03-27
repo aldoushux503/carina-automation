@@ -1,9 +1,7 @@
 package com.zebrunner.carina.automationexercise.web;
 
-import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
-import com.zebrunner.carina.automationexercise.gui.pages.common.ProductsPageBase;
+import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.HomePageBase;
 import com.zebrunner.carina.core.IAbstractTest;
-import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
 import org.testng.annotations.*;

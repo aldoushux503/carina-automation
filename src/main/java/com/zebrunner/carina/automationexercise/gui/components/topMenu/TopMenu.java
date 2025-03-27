@@ -1,10 +1,9 @@
 package com.zebrunner.carina.automationexercise.gui.components.topMenu;
 
-import com.zebrunner.carina.automationexercise.gui.pages.common.CartPageBase;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.CartPage;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.ContactUsPage;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.HomePage;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.ProductsPage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.CartPage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.ContactUsPage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.HomePage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.ProductsPage;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;

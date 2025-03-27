@@ -15,11 +15,10 @@
  *******************************************************************************/
 package com.zebrunner.carina.automationexercise.gui.components.topMenu;
 
-import com.zebrunner.carina.automationexercise.gui.pages.common.ContactUsPageBase;
-import com.zebrunner.carina.automationexercise.gui.pages.common.HomePageBase;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.CartPage;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.ContactUsPage;
-import com.zebrunner.carina.automationexercise.gui.pages.desktop.ProductsPage;
+import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.ContactUsPageBase;
+import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.HomePageBase;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.CartPage;
+import com.zebrunner.carina.automationexercise.gui.pages.desktop.automationexercise.ProductsPage;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;

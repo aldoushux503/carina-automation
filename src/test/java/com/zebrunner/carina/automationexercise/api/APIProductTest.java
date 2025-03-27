@@ -1,5 +1,8 @@
 package com.zebrunner.carina.automationexercise.api;
 
+import com.zebrunner.carina.automationexercise.api.login.PostLoginMethods;
+import com.zebrunner.carina.automationexercise.api.product.GetProductsListMethod;
+import com.zebrunner.carina.automationexercise.api.product.PostSearchProductMethod;
 import com.zebrunner.carina.core.IAbstractTest;
 import org.testng.annotations.Test;
 

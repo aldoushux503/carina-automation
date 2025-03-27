@@ -1,14 +1,10 @@
 package com.zebrunner.carina.automationexercise.api;
 
-import com.zebrunner.agent.core.annotation.Priority;
-import com.zebrunner.carina.automationexercise.api.DeleteUserMethod;
-import com.zebrunner.carina.automationexercise.api.GetUserMethod;
-import com.zebrunner.carina.automationexercise.api.PostCreateUser;
-import com.zebrunner.carina.automationexercise.api.PutUpdateUserMethod;
+import com.zebrunner.carina.automationexercise.api.user.DeleteUserMethod;
+import com.zebrunner.carina.automationexercise.api.user.GetUserMethod;
+import com.zebrunner.carina.automationexercise.api.user.PostCreateUser;
+import com.zebrunner.carina.automationexercise.api.user.PutUpdateUserMethod;
 import com.zebrunner.carina.core.IAbstractTest;
-import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 public class APIUserTest implements IAbstractTest {
