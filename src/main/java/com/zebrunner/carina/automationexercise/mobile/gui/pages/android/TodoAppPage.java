@@ -14,7 +14,6 @@ public class TodoAppPage extends TodoAppPageBase {
     private static final String TOGGLE_TASK_XPATH = "//android.view.ViewGroup[@resource-id='toggleTask-%s']";
     private static final String EDIT_TASK_XPATH = "//android.view.ViewGroup[@resource-id='editTask-%s' and @content-desc='Edit']";
     private static final String DELETE_TASK_XPATH = "//android.view.ViewGroup[@resource-id='deleteTask-%s' and @content-desc='Delete']";
-    private static final String TASK_TEXT_XPATH = "//android.widget.TextView[@resource-id='taskText-%s']";
     private static final String TASK_TEXT_BY_TEXT_XPATH = "//android.widget.TextView[@text='%s']";
     private static final String ALL_TASKS_TEXT_XPATH = "//android.widget.TextView[starts-with(@resource-id, 'taskText-')]";
     private static final String DELETE_CONFIRM_BUTTON_XPATH = "//android.widget.Button[@resource-id='android:id/button1']";
