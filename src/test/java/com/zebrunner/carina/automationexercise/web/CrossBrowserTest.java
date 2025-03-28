@@ -11,7 +11,7 @@ import org.testng.annotations.*;
  * This test class demonstrates how to run the same tests on multiple browsers
  * using TestNG's data provider with BrowserFactory
  */
-public class WebCrossBrowserTest implements IAbstractTest {
+public class CrossBrowserTest implements IAbstractTest {
 
     private final String browser;
     private final String testId;
@@ -19,7 +19,7 @@ public class WebCrossBrowserTest implements IAbstractTest {
     private HomePageBase homePage;
 
     @Factory(dataProvider = "browsersData")
-    public WebCrossBrowserTest(String testId, String browser) {
+    public CrossBrowserTest(String testId, String browser) {
         this.testId = testId;
         this.browser = browser;
         R.CONFIG.put("capabilities.browserName", browser);

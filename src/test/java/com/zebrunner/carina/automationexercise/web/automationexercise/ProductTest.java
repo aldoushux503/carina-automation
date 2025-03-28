@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 /**
  * Tests for product search and review functionality
  */
-public class WebProductTest extends AbstractWebTest {
+public class ProductTest extends AbstractWebTest {
 
     private ProductsPageBase productsPage;
 

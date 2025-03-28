@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class WebWikipediaLocalizationTest implements IAbstractTest {
+public class WikipediaLocalizationTest implements IAbstractTest {
 
     private WikipediaHomePage homePage;
 

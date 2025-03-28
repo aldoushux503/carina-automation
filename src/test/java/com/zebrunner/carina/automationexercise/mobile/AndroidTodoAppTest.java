@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class TodoAppTest implements IAbstractTest, IMobileUtils {
+public class AndroidTodoAppTest implements IAbstractTest, IMobileUtils {
 
     private static final int RANDOM_STRING_LENGTH = 5;
 

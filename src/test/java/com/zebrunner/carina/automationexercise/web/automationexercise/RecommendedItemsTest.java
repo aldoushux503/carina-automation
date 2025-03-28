@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 /**
  * Tests for recommended items functionality
  */
-public class WebRecommendedItemsTest extends AbstractWebTest {
+public class RecommendedItemsTest extends AbstractWebTest {
 
     @Test
     public void testAddRecommendedItemToCart() {

@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class WebCartTest extends AbstractWebTest {
+public class CartTest extends AbstractWebTest {
 
     private ProductsPageBase productsPage;
 

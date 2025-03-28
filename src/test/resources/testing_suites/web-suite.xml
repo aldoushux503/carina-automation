@@ -7,19 +7,19 @@
     <parameter name="jenkinsRegressionPipeline" value="web_regression"/>
     <parameter name="jenkinsAutoScreenshot" value="true"/>
 
-    <!-- Specify custom properties files -->
+    <!-- Custom properties files -->
     <parameter name="configFile" value="src/main/resources/_config.properties"/>
     <parameter name="env" value="DEMO"/>
 
     <test name="Automation Exercise Web Tests">
         <parameter name="test_platform" value="web"/>
         <classes>
-            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.WebProductTest"/>
-            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.WebCartTest"/>
-            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.WebContactTest"/>
-            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.WebRecommendedItemsTest"/>
-            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.WebSubscriptionTest"/>
-            <class name="com.zebrunner.carina.automationexercise.web.WebCrossBrowserTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.ProductTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.CartTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.ContactTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.RecommendedItemsTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.automationexercise.SubscriptionTest"/>
+            <class name="com.zebrunner.carina.automationexercise.web.CrossBrowserTest"/>
         </classes>
     </test>
 </suite>

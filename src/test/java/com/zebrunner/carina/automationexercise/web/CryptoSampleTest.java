@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 /**
  * This test demonstrates how to use Carina's crypto functionality.
  */
-public class WebCryptoSampleTest implements IAbstractTest {
+public class CryptoSampleTest implements IAbstractTest {
 
     private CryptoTool cryptoTool;
     @BeforeSuite

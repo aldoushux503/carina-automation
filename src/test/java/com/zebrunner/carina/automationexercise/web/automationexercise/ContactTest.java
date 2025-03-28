@@ -7,7 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
-public class WebContactTest extends AbstractWebTest {
+public class ContactTest extends AbstractWebTest {
 
     @Test(dataProvider = "contactUsData")
     public void testContactFormSubmission(String testId, String name, String email,

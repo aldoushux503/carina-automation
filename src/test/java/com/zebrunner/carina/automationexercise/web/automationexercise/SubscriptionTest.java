@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 /**
  * Tests for newsletter subscription functionality
  */
-public class WebSubscriptionTest extends AbstractWebTest {
+public class SubscriptionTest extends AbstractWebTest {
 
     @Test(dataProvider = "validEmailProvider")
     public void testSubscriptionInHomePage(String testId, String email) {
