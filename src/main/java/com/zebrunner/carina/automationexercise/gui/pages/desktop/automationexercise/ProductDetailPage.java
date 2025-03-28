@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = ProductDetailPageBase.class)
 public class ProductDetailPage extends ProductDetailPageBase {
 
-    // Element declarations with descriptive names
     @FindBy(xpath = "//div[@class='product-information']")
     private ExtendedWebElement productInformationBlock;
 

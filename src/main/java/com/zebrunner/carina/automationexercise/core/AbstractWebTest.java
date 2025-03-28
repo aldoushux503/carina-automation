@@ -16,17 +16,6 @@ public abstract class AbstractWebTest implements IAbstractTest {
         homePage = initPage(getDriver(), HomePageBase.class);
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Home page failed to load");
-
-        additionalSetUp();
     }
 
-    protected void additionalSetUp() {
-        // Subclasses can override this to add their own setup logic
-    }
-
-    protected ProductsPageBase getVerifiedProductsPage() {
-        ProductsPageBase productsPage = homePage.getProductsPage();
-        Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
-        return productsPage;
-    }
 }

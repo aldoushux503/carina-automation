@@ -5,20 +5,24 @@ import com.zebrunner.carina.automationexercise.gui.pages.common.automationexerci
 import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.ProductsPageBase;
 import com.zebrunner.carina.automationexercise.core.AbstractWebTest;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class CartTest extends AbstractWebTest {
 
     private ProductsPageBase productsPage;
-
     @Override
-    protected void additionalSetUp() {
-        productsPage = getVerifiedProductsPage();
+    @BeforeMethod(alwaysRun = true)
+    public void baseSetUp() {
+        super.baseSetUp();
+        productsPage = homePage.getProductsPage();
+        Assert.assertTrue(productsPage.isPageOpened(), "Products page failed to load");
     }
 
     @Test(dataProvider = "productsToAdd")
-    public void verifyMultipleProductsCanBeAddedToCart(String testId, int firstProductIndex, int secondProductIndex, int expectedCount) {
+    public void verifyProductsAmountItemsAddedToCart(String testId, int firstProductIndex,
+                                                     int secondProductIndex, int expectedCount) {
         productsPage.addProductToCart(firstProductIndex);
         productsPage.clickContinueShopping();
 
