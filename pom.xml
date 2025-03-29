@@ -22,7 +22,8 @@
 
 		<java.version>11</java.version>
 		<zebrunner-agent.version>1.9.8</zebrunner-agent.version>
-		<suite>helloWorld</suite>
+		<suite>web-suite</suite>
+		<suite>android-suite</suite>
 	</properties>
 
 	<!--repositories>

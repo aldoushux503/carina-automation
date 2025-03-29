@@ -14,21 +14,30 @@ public abstract class TodoAppPageBase extends AbstractPage {
 
     // Task operations
     public abstract void addTask(String taskText);
+
     public abstract void toggleTaskCompletion(String taskText);
+
     public abstract void deleteTask(String taskText);
+
     public abstract void editTask(String oldTaskText, String newTaskText);
+
     public abstract void startEditTask(String taskText);
+
     public abstract void typeInTaskInput(String text);
+
     public abstract void cancelEditTask();
 
     // Filtering
-    public abstract void filterByAll();
-    public abstract void filterByActive();
-    public abstract void filterByCompleted();
+    public abstract void selectFilterByLabel(String label);
+
+    public abstract void selectFilterByIndex(int index);
 
     // Verification methods
     public abstract boolean isTaskDisplayed(String taskText);
 
     public abstract int getRemainingTaskCount();
+
     public abstract String getRemainingTaskCountText();
+
+
 }

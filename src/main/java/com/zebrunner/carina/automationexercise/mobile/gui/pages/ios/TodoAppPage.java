@@ -3,7 +3,7 @@ package com.zebrunner.carina.automationexercise.mobile.gui.pages.ios;
 import com.zebrunner.carina.automationexercise.mobile.gui.pages.common.TodoAppPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import java.util.List;
@@ -11,42 +11,50 @@ import java.util.List;
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = TodoAppPageBase.class)
 public class TodoAppPage extends TodoAppPageBase {
 
-    private static final String TOGGLE_TASK_XPATH = "//XCUIElementTypeButton[@name='toggleTask-%s']";
-    private static final String EDIT_TASK_XPATH = "//XCUIElementTypeButton[@name='editTask-%s' and @label='Edit']";
-    private static final String DELETE_TASK_XPATH = "//XCUIElementTypeButton[@name='deleteTask-%s' and @label='Delete']";
-    private static final String TASK_TEXT_BY_TEXT_XPATH = "//XCUIElementTypeStaticText[@label='%s']";
-    private static final String ALL_TASKS_TEXT_XPATH = "//XCUIElementTypeStaticText[starts-with(@name, 'taskText-')]";
-    private static final String DELETE_CONFIRM_BUTTON_XPATH = "//XCUIElementTypeButton[@label='Delete']";
-
-    @FindBy(xpath = "//XCUIElementTypeTextField[@name='taskInput']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeTextField[@name='taskInput']")
     private ExtendedWebElement taskInput;
 
-    @FindBy(xpath = "//XCUIElementTypeButton[@name='addTask' and @label='Add']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[@name='addTask' and @label='Add']")
     private ExtendedWebElement addTaskButton;
 
-    @FindBy(xpath = "//XCUIElementTypeScrollView[@name='taskList']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeScrollView[@name='taskList']")
     private ExtendedWebElement taskList;
 
-    @FindBy(xpath = "//XCUIElementTypeButton[@name='filterAll' and @label='All']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[@name='filterAll' and @label='All']")
     private ExtendedWebElement filterAllButton;
 
-    @FindBy(xpath = "//XCUIElementTypeButton[@name='filterActive' and @label='Active']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[@name='filterActive' and @label='Active']")
     private ExtendedWebElement filterActiveButton;
 
-    @FindBy(xpath = "//XCUIElementTypeButton[@name='filterCompleted' and @label='Completed']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[@name='filterCompleted' and @label='Completed']")
     private ExtendedWebElement filterCompletedButton;
 
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name='taskCount']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeStaticText[@name='taskCount']")
     private ExtendedWebElement taskCountText;
 
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@label='Save']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeStaticText[@label='Save']")
     private ExtendedWebElement saveTaskButton;
 
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@label='Cancel']")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeStaticText[@label='Cancel']")
     private ExtendedWebElement cancelEditButton;
 
-    @FindBy(xpath = "//XCUIElementTypeStaticText[contains(@label, 'TODO APP')]")
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeStaticText[contains(@label, 'TODO APP')]")
     private ExtendedWebElement headerText;
+
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeStaticText[starts-with(@name, 'taskText-')]")
+    private List<ExtendedWebElement> taskTextElements;
+
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[starts-with(@name, 'toggleTask-')]")
+    private List<ExtendedWebElement> toggleTaskButtons;
+
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[starts-with(@name, 'editTask-') and @label='Edit']")
+    private List<ExtendedWebElement> editTaskButtons;
+
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[starts-with(@name, 'deleteTask-') and @label='Delete']")
+    private List<ExtendedWebElement> deleteTaskButtons;
+
+    @ExtendedFindBy(iosClassChain = "//XCUIElementTypeButton[@label='Delete']")
+    private ExtendedWebElement deleteConfirmButton;
 
     public TodoAppPage(WebDriver driver) {
         super(driver);
@@ -66,26 +74,26 @@ public class TodoAppPage extends TodoAppPageBase {
 
     @Override
     public void toggleTaskCompletion(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(TOGGLE_TASK_XPATH, taskId))).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            toggleTaskButtons.get(taskIndex).click();
         }
     }
 
     @Override
     public void deleteTask(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(DELETE_TASK_XPATH, taskId))).click();
-            findExtendedWebElement(By.xpath(DELETE_CONFIRM_BUTTON_XPATH)).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            deleteTaskButtons.get(taskIndex).click();
+            deleteConfirmButton.click();
         }
     }
 
     @Override
     public void startEditTask(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(EDIT_TASK_XPATH, taskId))).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            editTaskButtons.get(taskIndex).click();
         }
     }
 
@@ -107,28 +115,60 @@ public class TodoAppPage extends TodoAppPageBase {
     }
 
     @Override
-    public void filterByAll() {
+    public void selectFilterByLabel(String label) {
+        if (label == null || label.isEmpty()) {
+            throw new IllegalArgumentException("Filter label cannot be null or empty");
+        }
+
+        switch (label.toLowerCase()) {
+            case "all":
+                filterByAll();
+                break;
+            case "active":
+                filterByActive();
+                break;
+            case "completed":
+                filterByCompleted();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported filter label: " + label);
+        }
+    }
+
+    @Override
+    public void selectFilterByIndex(int index) {
+        switch (index) {
+            case 0:
+                filterByAll();
+                break;
+            case 1:
+                filterByActive();
+                break;
+            case 2:
+                filterByCompleted();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported filter index: " + index);
+        }
+    }
+
+
+    private void filterByAll() {
         filterAllButton.click();
     }
 
-    @Override
-    public void filterByActive() {
+
+    private void filterByActive() {
         filterActiveButton.click();
     }
 
-    @Override
-    public void filterByCompleted() {
+    private void filterByCompleted() {
         filterCompletedButton.click();
     }
 
     @Override
     public boolean isTaskDisplayed(String taskText) {
-        ExtendedWebElement element = findExtendedWebElement(By.xpath(String.format(TASK_TEXT_BY_TEXT_XPATH, taskText)));
-        if(element == null) {
-            return false;
-        }
-
-        return element.isElementPresent();
+        return findTaskIndex(taskText) != -1;
     }
 
     @Override
@@ -142,18 +182,12 @@ public class TodoAppPage extends TodoAppPageBase {
         return taskCountText.getText();
     }
 
-    private String findTaskIdByText(String taskText) {
-        List<ExtendedWebElement> taskTextElements = findExtendedWebElements(By.xpath(ALL_TASKS_TEXT_XPATH));
-
-        for (ExtendedWebElement element : taskTextElements) {
-            if (element.getText().equals(taskText)) {
-                String resourceId = element.getAttribute("name");
-                if (resourceId != null) {
-                    return resourceId.replace("taskText-", "");
-                }
+    private int findTaskIndex(String taskText) {
+        for (int i = 0; i < taskTextElements.size(); i++) {
+            if (taskTextElements.get(i).getText().equals(taskText)) {
+                return i;
             }
         }
-
-        return null;
+        return -1;
     }
 }

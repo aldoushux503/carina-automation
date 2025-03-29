@@ -3,21 +3,13 @@ package com.zebrunner.carina.automationexercise.mobile.gui.pages.android;
 import com.zebrunner.carina.automationexercise.mobile.gui.pages.common.TodoAppPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+
 import java.util.List;
 
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = TodoAppPageBase.class)
 public class TodoAppPage extends TodoAppPageBase {
-
-    private static final String TOGGLE_TASK_XPATH = "//android.view.ViewGroup[@resource-id='toggleTask-%s']";
-    private static final String EDIT_TASK_XPATH = "//android.view.ViewGroup[@resource-id='editTask-%s' and @content-desc='Edit']";
-    private static final String DELETE_TASK_XPATH = "//android.view.ViewGroup[@resource-id='deleteTask-%s' and @content-desc='Delete']";
-    private static final String TASK_TEXT_BY_TEXT_XPATH = "//android.widget.TextView[@text='%s']";
-    private static final String ALL_TASKS_TEXT_XPATH = "//android.widget.TextView[starts-with(@resource-id, 'taskText-')]";
-    private static final String DELETE_CONFIRM_BUTTON_XPATH = "//android.widget.Button[@resource-id='android:id/button1']";
-
     @FindBy(xpath = "//android.widget.EditText[@resource-id='taskInput']")
     private ExtendedWebElement taskInput;
 
@@ -48,6 +40,21 @@ public class TodoAppPage extends TodoAppPageBase {
     @FindBy(xpath = "//android.widget.TextView[contains(@text, 'TODO APP')]")
     private ExtendedWebElement headerText;
 
+    @FindBy(xpath = "//android.widget.TextView[starts-with(@resource-id, 'taskText-')]")
+    private List<ExtendedWebElement> taskTextElements;
+
+    @FindBy(xpath = "//android.view.ViewGroup[starts-with(@resource-id, 'toggleTask-')]")
+    private List<ExtendedWebElement> toggleTaskButtons;
+
+    @FindBy(xpath = "//android.view.ViewGroup[starts-with(@resource-id, 'editTask-') and @content-desc='Edit']")
+    private List<ExtendedWebElement> editTaskButtons;
+
+    @FindBy(xpath = "//android.view.ViewGroup[starts-with(@resource-id, 'deleteTask-') and @content-desc='Delete']")
+    private List<ExtendedWebElement> deleteTaskButtons;
+
+    @FindBy(xpath = "//android.widget.Button[@resource-id='android:id/button1']")
+    private ExtendedWebElement deleteConfirmButton;
+
     public TodoAppPage(WebDriver driver) {
         super(driver);
         setUiLoadedMarker(headerText);
@@ -66,26 +73,26 @@ public class TodoAppPage extends TodoAppPageBase {
 
     @Override
     public void toggleTaskCompletion(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(TOGGLE_TASK_XPATH, taskId))).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            toggleTaskButtons.get(taskIndex).click();
         }
     }
 
     @Override
     public void deleteTask(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(DELETE_TASK_XPATH, taskId))).click();
-            findExtendedWebElement(By.xpath(DELETE_CONFIRM_BUTTON_XPATH)).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            deleteTaskButtons.get(taskIndex).click();
+            deleteConfirmButton.click();
         }
     }
 
     @Override
     public void startEditTask(String taskText) {
-        String taskId = findTaskIdByText(taskText);
-        if (taskId != null) {
-            findExtendedWebElement(By.xpath(String.format(EDIT_TASK_XPATH, taskId))).click();
+        int taskIndex = findTaskIndex(taskText);
+        if (taskIndex != -1) {
+            editTaskButtons.get(taskIndex).click();
         }
     }
 
@@ -107,30 +114,60 @@ public class TodoAppPage extends TodoAppPageBase {
     }
 
     @Override
-    public void filterByAll() {
+    public void selectFilterByLabel(String label) {
+        if (label == null || label.isEmpty()) {
+            throw new IllegalArgumentException("Filter label cannot be null or empty");
+        }
+
+        switch (label.toLowerCase()) {
+            case "all":
+                filterByAll();
+                break;
+            case "active":
+                filterByActive();
+                break;
+            case "completed":
+                filterByCompleted();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported filter label: " + label);
+        }
+    }
+
+    @Override
+    public void selectFilterByIndex(int index) {
+        switch (index) {
+            case 0:
+                filterByAll();
+                break;
+            case 1:
+                filterByActive();
+                break;
+            case 2:
+                filterByCompleted();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported filter index: " + index);
+        }
+    }
+
+
+    private void filterByAll() {
         filterAllButton.click();
     }
 
-    @Override
-    public void filterByActive() {
+    private void filterByActive() {
         filterActiveButton.click();
     }
 
-    @Override
-    public void filterByCompleted() {
+    private void filterByCompleted() {
         filterCompletedButton.click();
     }
 
     @Override
     public boolean isTaskDisplayed(String taskText) {
-        ExtendedWebElement element = findExtendedWebElement(By.xpath(String.format(TASK_TEXT_BY_TEXT_XPATH, taskText)));
-        if(element == null) {
-            return false;
-        }
-
-        return element.isElementPresent();
+        return findTaskIndex(taskText) != -1;
     }
-
 
     @Override
     public int getRemainingTaskCount() {
@@ -143,18 +180,12 @@ public class TodoAppPage extends TodoAppPageBase {
         return taskCountText.getText();
     }
 
-    private String findTaskIdByText(String taskText) {
-        List<ExtendedWebElement> taskTextElements = findExtendedWebElements(By.xpath(ALL_TASKS_TEXT_XPATH));
-
-        for (ExtendedWebElement element : taskTextElements) {
-            if (element.getText().equals(taskText)) {
-                String resourceId = element.getAttribute("resource-id");
-                if (resourceId != null) {
-                    return resourceId.replace("taskText-", "");
-                }
+    private int findTaskIndex(String taskText) {
+        for (int i = 0; i < taskTextElements.size(); i++) {
+            if (taskTextElements.get(i).getText().equals(taskText)) {
+                return i;
             }
         }
-
-        return null;
+        return -1;
     }
 }

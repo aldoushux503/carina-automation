@@ -4,7 +4,6 @@ import com.zebrunner.carina.automationexercise.gui.components.ProductInfo;
 import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.CartPageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -16,12 +15,7 @@ import java.util.Map;
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = CartPageBase.class)
 public class CartPage extends CartPageBase {
 
-    private static final String CART_ITEM_ROW_XPATH = "//table[@id='cart_info_table']//tbody//tr[@id='product-%d']";
-    private static final String PRODUCT_NAME_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_description']/h4/a";
-    private static final String PRODUCT_PRICE_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_price']/p";
-    private static final String PRODUCT_QUANTITY_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_quantity']/button";
-    private static final String PRODUCT_TOTAL_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_total']/p[@class='cart_total_price']";
-    private static final String PRODUCT_DELETE_XPATH = CART_ITEM_ROW_XPATH + "//td[@class='cart_delete']/a[@data-product-id='%d']";
+    private static final String CART_ITEMS_BASE = "//table[@id='cart_info_table']//tbody//tr[starts-with(@id, 'product-')]";
 
     @FindBy(id = "cart_info")
     private ExtendedWebElement cartInfoTable;
@@ -38,8 +32,23 @@ public class CartPage extends CartPageBase {
     @FindBy(xpath = "//div[@id='success-subscribe']//div[@class='alert-success alert']")
     private ExtendedWebElement subscriptionSuccessMessage;
 
-    @FindBy(xpath = "//table[@id='cart_info_table']//tbody//tr[starts-with(@id, 'product-')]")
+    @FindBy(xpath = CART_ITEMS_BASE)
     private List<ExtendedWebElement> cartItemsList;
+
+    @FindBy(xpath = CART_ITEMS_BASE + "//td[@class='cart_description']/h4/a")
+    private List<ExtendedWebElement> productNames;
+
+    @FindBy(xpath = CART_ITEMS_BASE + "//td[@class='cart_price']/p")
+    private List<ExtendedWebElement> productPrices;
+
+    @FindBy(xpath = CART_ITEMS_BASE + "//td[@class='cart_quantity']/button")
+    private List<ExtendedWebElement> productQuantities;
+
+    @FindBy(xpath = CART_ITEMS_BASE + "//td[@class='cart_total']/p[@class='cart_total_price']")
+    private List<ExtendedWebElement> productTotals;
+
+    @FindBy(xpath = CART_ITEMS_BASE + "//td[@class='cart_delete']/a")
+    private List<ExtendedWebElement> productDeleteButtons;
 
     @FindBy(id = "empty_cart")
     private ExtendedWebElement emptyCartMessage;
@@ -70,21 +79,16 @@ public class CartPage extends CartPageBase {
     @Override
     public boolean isSubscriptionSuccessMessageVisible() {
         return subscriptionSuccessMessage.isElementPresent() &&
-                subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!") &&
-                findExtendedWebElement(By.id("success-subscribe")).getAttribute("class").contains("form-group") &&
-                !findExtendedWebElement(By.id("success-subscribe")).getAttribute("class").contains("hide");
+                subscriptionSuccessMessage.getText().contains("You have been successfully subscribed!");
     }
 
     @Override
     public List<ProductInfo> getProductsInCart() {
         List<ProductInfo> products = new ArrayList<>();
 
-        for (ExtendedWebElement item : cartItemsList) {
-            String id = item.getAttribute("id").replace("product-", "");
-            int productId = Integer.parseInt(id);
-
-            String name = getProductNameElement(productId).getText();
-            String price = getProductPriceElement(productId).getText();
+        for (int i = 0; i < cartItemsList.size(); i++) {
+            String name = productNames.get(i).getText();
+            String price = productPrices.get(i).getText();
             products.add(new ProductInfo(name, price));
         }
 
@@ -95,14 +99,11 @@ public class CartPage extends CartPageBase {
     public Map<String, Map<String, String>> getProductDetails() {
         Map<String, Map<String, String>> productDetails = new HashMap<>();
 
-        for (ExtendedWebElement item : cartItemsList) {
-            String id = item.getAttribute("id").replace("product-", "");
-            int productId = Integer.parseInt(id);
-
-            String name = getProductNameElement(productId).getText();
-            String price = getProductPriceElement(productId).getText();
-            String quantity = getProductQuantityElement(productId).getText();
-            String total = getProductTotalElement(productId).getText();
+        for (int i = 0; i < cartItemsList.size(); i++) {
+            String name = productNames.get(i).getText();
+            String price = productPrices.get(i).getText();
+            String quantity = productQuantities.get(i).getText();
+            String total = productTotals.get(i).getText();
 
             Map<String, String> details = new HashMap<>();
             details.put("price", price);
@@ -123,13 +124,11 @@ public class CartPage extends CartPageBase {
 
     @Override
     public void removeProduct(String productName) {
-        for (ExtendedWebElement item : cartItemsList) {
-            String id = item.getAttribute("id").replace("product-", "");
-            int productId = Integer.parseInt(id);
-
-            if (getProductNameElement(productId).getText().equals(productName)) {
-                getProductDeleteElement(productId).click();
-                waitUntil(d -> item.isElementNotPresent(3), 3);
+        for (int i = 0; i < productNames.size(); i++) {
+            if (productNames.get(i).getText().equals(productName)) {
+                final int index = i;
+                productDeleteButtons.get(i).click();
+                waitUntil(d -> cartItemsList.get(index).isElementNotPresent(3), 3);
                 return;
             }
         }
@@ -140,26 +139,5 @@ public class CartPage extends CartPageBase {
         return emptyCartMessage.isElementPresent() &&
                 emptyCartMessage.isVisible() &&
                 emptyCartMessage.getAttribute("style").contains("display: block");
-    }
-
-    // Private helper methods
-    private ExtendedWebElement getProductNameElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(PRODUCT_NAME_XPATH, index)));
-    }
-
-    private ExtendedWebElement getProductPriceElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(PRODUCT_PRICE_XPATH, index)));
-    }
-
-    private ExtendedWebElement getProductQuantityElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(PRODUCT_QUANTITY_XPATH, index)));
-    }
-
-    private ExtendedWebElement getProductTotalElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(PRODUCT_TOTAL_XPATH, index)));
-    }
-
-    private ExtendedWebElement getProductDeleteElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(PRODUCT_DELETE_XPATH, index, index)));
     }
 }

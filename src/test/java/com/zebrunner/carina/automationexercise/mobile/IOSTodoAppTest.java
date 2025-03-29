@@ -45,7 +45,7 @@ public class IOSTodoAppTest implements IAbstractTest, IMobileUtils {
         todoPage.addTask(emptyText);
 
         // This test assumes the app has validation and won't add empty tasks
-        todoPage.filterByAll();
+        todoPage.selectFilterByLabel("All");
         Assert.assertFalse(todoPage.isTaskDisplayed(emptyText),
                 "Empty task should not be added");
     }
@@ -58,7 +58,7 @@ public class IOSTodoAppTest implements IAbstractTest, IMobileUtils {
         todoPage.addTask(duplicateText);
         todoPage.addTask(duplicateText);
 
-        todoPage.filterByAll();
+        todoPage.selectFilterByLabel("All");
 
         // Verify at least one instance of the task exists
         Assert.assertTrue(todoPage.isTaskDisplayed(duplicateText),

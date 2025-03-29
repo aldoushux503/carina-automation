@@ -5,16 +5,15 @@ import com.zebrunner.carina.automationexercise.gui.pages.common.automationexerci
 import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.HomePageBase;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.List;
 
 @DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = HomePageBase.class)
 public class HomePage extends HomePageBase {
 
-    private static final String RECOMMENDED_ITEM_XPATH = "//div[@class='recommended_items']//div[@class='item active']//div[contains(@class, 'col-sm-4')][%d]";
-    private static final String RECOMMENDED_ITEM_NAME_XPATH = RECOMMENDED_ITEM_XPATH + "//div[@class='productinfo text-center']/p";
-    private static final String RECOMMENDED_ITEM_ADD_TO_CART_XPATH = RECOMMENDED_ITEM_XPATH + "//a[@class='btn btn-default add-to-cart']";
+    private static final String RECOMMENDED_ITEMS_BASE = "//div[@class='recommended_items']//div[@class='item active']//div[contains(@class, 'col-sm-4')]";
 
     @FindBy(xpath = "//div[contains(@class, 'shop-menu')]")
     private TopMenu topMenu;
@@ -45,6 +44,15 @@ public class HomePage extends HomePageBase {
 
     @FindBy(xpath = "//p[@class='fc-button-label']")
     private ExtendedWebElement acceptCookieButton;
+
+    @FindBy(xpath = RECOMMENDED_ITEMS_BASE)
+    private List<ExtendedWebElement> recommendedItems;
+
+    @FindBy(xpath = RECOMMENDED_ITEMS_BASE + "//div[@class='productinfo text-center']/p")
+    private List<ExtendedWebElement> recommendedItemNames;
+
+    @FindBy(xpath = RECOMMENDED_ITEMS_BASE + "//a[@class='btn btn-default add-to-cart']")
+    private List<ExtendedWebElement> recommendedItemAddToCartButtons;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -108,13 +116,13 @@ public class HomePage extends HomePageBase {
     @Override
     public String getRecommendedItemName(int index) {
         validateRecommendedItemIndex(index);
-        return getRecommendedItemNameElement(index + 1).getText();
+        return recommendedItemNames.get(index).getText();
     }
 
     @Override
     public void addRecommendedItemToCart(int index) {
         validateRecommendedItemIndex(index);
-        getRecommendedItemAddToCartElement(index + 1).click();
+        recommendedItemAddToCartButtons.get(index).click();
     }
 
     @Override
@@ -130,17 +138,9 @@ public class HomePage extends HomePageBase {
         acceptCookieButton.clickIfPresent(3);
     }
 
-    private ExtendedWebElement getRecommendedItemNameElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(RECOMMENDED_ITEM_NAME_XPATH, index)));
-    }
-
-    private ExtendedWebElement getRecommendedItemAddToCartElement(int index) {
-        return findExtendedWebElement(By.xpath(String.format(RECOMMENDED_ITEM_ADD_TO_CART_XPATH, index)));
-    }
-
     private void validateRecommendedItemIndex(int index) {
-        if (index < 0) {
-            throw new IllegalArgumentException("Index must be non-negative: " + index);
+        if (index < 0 || index >= recommendedItems.size()) {
+            throw new IllegalArgumentException("Index out of bounds: " + index);
         }
     }
 }

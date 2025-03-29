@@ -48,7 +48,7 @@ public class AndroidTodoAppTest implements IAbstractTest, IMobileUtils {
         String taskText = createTask("Complete_");
 
         todoPage.toggleTaskCompletion(taskText);
-        todoPage.filterByCompleted();
+        todoPage.selectFilterByLabel("Completed");
         Assert.assertTrue(todoPage.isTaskDisplayed(taskText), "Task should be visible in Completed filter");
     }
 
@@ -73,7 +73,7 @@ public class AndroidTodoAppTest implements IAbstractTest, IMobileUtils {
 
     @DataProvider(name = "filterTestData")
     public Object[][] getFilterTestData() {
-        return new Object[][] {
+        return new Object[][]{
                 {"All", true, true},
                 {"Active", true, false},
                 {"Completed", false, true}
@@ -86,17 +86,7 @@ public class AndroidTodoAppTest implements IAbstractTest, IMobileUtils {
         String completedTask = createTask("Completed_");
         todoPage.toggleTaskCompletion(completedTask);
 
-        switch (filterType) {
-            case "All":
-                todoPage.filterByAll();
-                break;
-            case "Active":
-                todoPage.filterByActive();
-                break;
-            case "Completed":
-                todoPage.filterByCompleted();
-                break;
-        }
+        todoPage.selectFilterByLabel(filterType);
 
         Assert.assertEquals(todoPage.isTaskDisplayed(activeTask), shouldActiveBeVisible,
                 "Active task visibility incorrect with '" + filterType + "' filter");
@@ -125,7 +115,7 @@ public class AndroidTodoAppTest implements IAbstractTest, IMobileUtils {
             todoPage.addTask(prefix + "_Task_" + i);
         }
 
-        todoPage.filterByActive();
+        todoPage.selectFilterByLabel("Active");
         int initialCount = todoPage.getRemainingTaskCount();
 
         todoPage.toggleTaskCompletion(prefix + "_Task_1");
