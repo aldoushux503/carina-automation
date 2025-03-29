@@ -1,7 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Carina Demo - Web Tests" verbose="1">
     <parameter name="configFile" value="src/main/resources/_config.properties"/>
-    <parameter name="env" value="WEB"/>
 
     <test name="Automation Exercise Web Tests">
         <classes>
