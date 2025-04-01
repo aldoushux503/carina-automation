@@ -1,7 +1,9 @@
 package com.zebrunner.carina.automationexercise.gui.pages.desktop.wikipedia;
 
+import com.zebrunner.carina.automationexercise.gui.pages.common.automationexercise.ProductDetailPageBase;
 import com.zebrunner.carina.automationexercise.gui.pages.common.wikipedia.WikipediaHomePageBase;
 import com.zebrunner.carina.utils.config.Configuration;
+import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.config.WebDriverConfiguration;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.decorator.PageOpeningStrategy;
@@ -12,6 +14,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.Locale;
 
+@DeviceType(pageType = DeviceType.Type.DESKTOP, parentClass = WikipediaHomePageBase.class)
 public class WikipediaHomePage extends WikipediaHomePageBase {
 
     @FindBy(xpath = "//div[@id='js-lang-lists']//a")

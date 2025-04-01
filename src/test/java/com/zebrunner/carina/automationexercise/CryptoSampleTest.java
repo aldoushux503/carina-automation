@@ -1,4 +1,4 @@
-package com.zebrunner.carina.automationexercise.web;
+package com.zebrunner.carina.automationexercise;
 
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.crypto.Algorithm;

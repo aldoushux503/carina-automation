@@ -1,6 +1,8 @@
 package com.zebrunner.carina.automationexercise.gui.pages.desktop.wikipedia;
 
+import com.zebrunner.carina.automationexercise.gui.pages.common.wikipedia.WikipediaHomePageBase;
 import com.zebrunner.carina.utils.R;
+import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.NoSuchElementException;
@@ -75,18 +77,6 @@ public class WikipediaLocalePage extends AbstractPage {
         return createAccountLink.getText();
     }
 
-    public String getFooterText() {
-        return footerInfo.getText();
-    }
-
-    public void search(String query) {
-        searchInput.type(query);
-        searchButton.click();
-    }
-
-    public boolean isPageTitleEqualTo(String expectedTitle) {
-        return getPageTitle().equals(expectedTitle);
-    }
 
     public boolean isMainPageLinkTextEqualTo(String expectedText) {
         return getMainPageLinkText().equals(expectedText);
@@ -96,20 +86,12 @@ public class WikipediaLocalePage extends AbstractPage {
         return getRandomPageLinkText().equals(expectedText);
     }
 
-    public boolean isSearchPlaceholderEqualTo(String expectedPlaceholder) {
-        return getSearchPlaceholder().equals(expectedPlaceholder);
-    }
-
     public boolean isLoginLinkTextEqualTo(String expectedText) {
         return getLoginLinkText().equals(expectedText);
     }
 
     public boolean isCreateAccountLinkTextEqualTo(String expectedText) {
         return getCreateAccountLinkText().equals(expectedText);
-    }
-
-    public boolean isFooterTextContains(String expectedText) {
-        return getFooterText().contains(expectedText);
     }
 
     public boolean isCurrentLanguage(String language) {

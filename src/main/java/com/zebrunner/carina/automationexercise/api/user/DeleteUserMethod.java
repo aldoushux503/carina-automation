@@ -1,6 +1,7 @@
 package com.zebrunner.carina.automationexercise.api.user;
 
 import com.zebrunner.carina.api.AbstractApiMethodV2;
+import com.zebrunner.carina.api.annotation.ContentType;
 import com.zebrunner.carina.api.annotation.Endpoint;
 import com.zebrunner.carina.api.annotation.Header;
 import com.zebrunner.carina.api.annotation.SuccessfulHttpStatus;
@@ -8,7 +9,7 @@ import com.zebrunner.carina.api.http.HttpMethodType;
 import com.zebrunner.carina.api.http.HttpResponseStatusType;
 import com.zebrunner.carina.utils.config.Configuration;
 
-@Header(key = "Content-Type", value = "application/x-www-form-urlencoded")
+@ContentType(type = "application/x-www-form-urlencoded")
 @Endpoint(url = "${base_url}/deleteAccount", methodType = HttpMethodType.DELETE)
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
 public class DeleteUserMethod extends AbstractApiMethodV2 {

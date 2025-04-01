@@ -15,5 +15,6 @@ public class GetUserMethod extends AbstractApiMethodV2 {
         super("api/users/_get/rq.properties", "api/users/_get/rs.json", "api/users/user.properties");
         replaceUrlPlaceholder("base_url", Configuration.getRequired("api_url"));
         addParameter("email", getProperties().getProperty("email"));
+
     }
 }
