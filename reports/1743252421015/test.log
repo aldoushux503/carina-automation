@@ -1,0 +1,27 @@
+[2025-03-29 12:47:01] [1] [INFO] 
+============= Basic configuration =============
+env=ANDROID
+=========== Encryptor configuration ===========
+crypto_key_value=*****
+=========== WebDriver configuration ===========
+auto_screenshot=true
+localization_encoding=UTF-8
+localization_testing=true
+language=en_US
+-------------- Driver capabilities ------------
+deviceType=phone
+app=D:/Java/carina-automation/src/test/resources/app-debug.zip
+automationName=uiautomator2
+udid=emulator-5554
+platformName=ANDROID
+deviceName=Pixel 9
+===============================================
+
+[2025-03-29 12:47:01] [1] [WARN] Reporting disabled: using no op test run registrar
+[2025-03-29 12:47:05] [1] [INFO] [TestNG] Running:
+  C:\Users\elnik\AppData\Local\JetBrains\IntelliJIdea2023.1\temp-testng-customsuite.xml
+
+[2025-03-29 12:47:05] [1] [INFO] Set thread-count=1
+[2025-03-29 12:47:05] [1] [INFO] Set data-provider-thread-count=1
+[2025-03-29 12:47:05] [1] [INFO] CARINA_CORE_VERSION: 1.3.0
+[2025-03-29 12:47:05] [1] [INFO] Starting driver session...

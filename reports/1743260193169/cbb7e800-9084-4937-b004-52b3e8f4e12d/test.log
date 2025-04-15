@@ -1,0 +1,79 @@
+[2025-03-29 02:56:37] [1] [WARN] Reporting disabled: using no op test run registrar
+[2025-03-29 02:56:37] [1] [INFO] TEST [carina-automation - testCreateUser] STARTED at [15:56:37 2025-03-29]
+[2025-03-29 02:56:38] [1] [INFO] Base properties loaded: api/users/user.properties
+[2025-03-29 02:56:41] [1] [INFO] Request method:	POST
+Request URI:	https://www.automationexercise.com/api/createAccount
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Multiparts:		<none>
+Cookies:		<none>
+Headers:		Accept=*/*
+				Content-Type=application/x-www-form-urlencoded; charset=ISO-8859-1
+Body:
+name=John Smith&email=smithskibidi@gmail.com&password=1234&title=Mr&birth_date=1&birth_month=1&birth_year=1990&firstname=John&lastname=Smith&company=Acme Corp&address1=123 Test Street&address2=Apt 456&country=United States&zipcode=12345&state=CA&city=San Diego&mobile_number=1234567890
+HTTP/1.1 200 OK
+Date: Sat, 29 Mar 2025 14:56:40 GMT
+Content-Type: text/html; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+vary: Accept,Cookie,Accept-Encoding
+referrer-policy: same-origin
+x-frame-options: DENY
+x-content-type-options: nosniff
+allow: OPTIONS, POST
+x-powered-by: Phusion Passenger(R) 6.0.23
+status: 200 OK
+cf-cache-status: DYNAMIC
+Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=FDjkYs9t0%2FF9xy0UClCOWYu6n24usb8H56Q2FN5Q8nKpypNHwoG3VjxxEPI8orHL2CeN7TDeCYTGuwN6xSwWTvNSuz2QeLr%2F%2FietW0kxi8JtNCOAPx2HaLo7wnFUskAT2AWJlKM%2FMDPVTgsX5g%3D%3D"}],"group":"cf-nel","max_age":604800}
+NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+Server: cloudflare
+CF-RAY: 9280371a6b16b2de-WAW
+Content-Encoding: gzip
+alt-svc: h3=":443"; ma=86400
+server-timing: cfL4;desc="?proto=TCP&rtt=5559&min_rtt=4779&rtt_var=2349&sent=7&recv=7&lost=0&retrans=0&sent_bytes=3146&recv_bytes=1164&delivery_rate=872567&cwnd=252&unsent_bytes=0&cid=fa71f6f6d4965687&ts=872&x=0"
+
+<html>
+  <body>{"responseCode": 400, "message": "Email already exists!"}</body>
+</html>
+
+[2025-03-29 02:56:41] [1] [ERROR] TEST [carina-automation - testCreateUser] FAILED at [15:56:41 2025-03-29] - message
+Expected: User created!
+     got: Email already exists!
+ ; responseCode
+Expected: 201
+     got: 400
+
+
+org.skyscreamer.jsonassert.JSONAssert.assertEquals(JSONAssert.java:482)
+org.skyscreamer.jsonassert.JSONAssert.assertEquals(JSONAssert.java:464)
+com.zebrunner.carina.api.AbstractApiMethodV2.validateResponse(AbstractApiMethodV2.java:339)
+com.zebrunner.carina.api.AbstractApiMethodV2.validateResponse(AbstractApiMethodV2.java:299)
+com.zebrunner.carina.api.AbstractApiMethodV2.validateResponse(AbstractApiMethodV2.java:363)
+com.zebrunner.carina.automationexercise.api.APIUserTest.testCreateUser(APIUserTest.java:17)
+java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+java.base/java.lang.reflect.Method.invoke(Method.java:578)
+org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
+org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
+org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
+org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+org.testng.TestRunner.privateRun(TestRunner.java:848)
+org.testng.TestRunner.run(TestRunner.java:621)
+org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+org.testng.SuiteRunner.run(SuiteRunner.java:336)
+org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
+org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
+org.testng.TestNG.runSuites(TestNG.java:1114)
+org.testng.TestNG.run(TestNG.java:1082)
+com.intellij.rt.testng.IDEARemoteTestNG.run(IDEARemoteTestNG.java:66)
+com.intellij.rt.testng.RemoteTestNGStarter.main(RemoteTestNGStarter.java:105)
